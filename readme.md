@@ -1,16 +1,7 @@
-# Three.js - Template - Simple
+# PNL - La Discographie
 
-## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
+## What is this project?
 
-``` bash
-# Install dependencies (only the first time)
-npm install
-
-# Run the local server at localhost:8080
-npm run dev
-
-# Build for production in the dist/ directory
-npm run build
+```
+hey, just started the project. will update the readme soon...
 ```
