@@ -1,7 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import {MeshBasicMaterial} from "three";
+import {FontLoader, MeshBasicMaterial} from "three";
 
 /**
  * Base
@@ -19,16 +19,34 @@ const dansLaLegendeTexture = textureLoader.load('/assets/covers/dll.jpg')
 const leMondeChicoTexture = textureLoader.load('/assets/covers/lmc.png')
 const queLaFamilleTexture = textureLoader.load('/assets/covers/qlf.jpg')
 
-// Text
+// Font loader
 
-const text = new THREE.TextGeometry({
-    text: 'Hello World!',
-    fontFamily: 'Arial, Helvetica, sans-serif',
-    fontSize: 12,
-    color: '#ffbbff',
-},
-    );
-scene.add(text);
+const fontLoader = new THREE.FontLoader();
+
+fontLoader.load(
+    '/assets/fonts/Display_Regular.js',
+    (font) => {
+        console.log('Font loaded.')
+
+        const fontShape = font.generateShapes('PNL\nla discographie', 100);
+
+
+        const textGeometry = new THREE.ShapeGeometry(fontShape);
+
+        textGeometry.computeBoundingBox()
+        textGeometry.translate(
+            - (textGeometry.boundingBox.max.x - 0.2)  * 0.5, //Dividing by 2, its the same adel
+             (textGeometry.boundingBox.max.y - 0.2) * 2,
+            - (textGeometry.boundingBox.max.z - 0.03) * 0.5
+        )
+        textGeometry.center()
+
+
+        const material = new THREE.MeshStandardMaterial({ color: 'white' })
+        const text = new THREE.Mesh(textGeometry, material)
+        scene.add(text)
+    }
+)
 
 
 /**
@@ -80,47 +98,61 @@ const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 
 /**
- * Cube
+ * Planes
  */
 
-
+// Deux frères
 const planeRed = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(1, 1),
+    new THREE.PlaneBufferGeometry(2, 2),
     new MeshBasicMaterial({
         side: THREE.DoubleSide,
         map: deuxFreresTexture
     })
 )
     planeRed.rotation.x = 0
+    planeRed.rotation.y = - Math.PI / 4.5
 
+// Dans la Légende
 const planeBlue = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(0.9, 0.9),
+    new THREE.PlaneBufferGeometry(1.9, 1.9),
     new MeshBasicMaterial({
         map: dansLaLegendeTexture,
         side: THREE.DoubleSide
     })
 )
 planeBlue.rotation.x = 0
-planeBlue.position.z = -0.4
+planeBlue.rotation.y = - Math.PI / 4.5
 
+planeBlue.position.x = 0.7
+planeBlue.position.z = -0.8
+
+
+// Le Monde Chico
 const planeYellow = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(0.8, 0.8),
+    new THREE.PlaneBufferGeometry(1.5, 1.5),
     new MeshBasicMaterial({
         map: leMondeChicoTexture,
         side: THREE.DoubleSide,
     })
 )
 planeYellow.rotation.x = 0
+planeYellow.rotation.y = - Math.PI / 4.5
+
+planeYellow.position.x = 1.2
 planeYellow.position.z = -0.8
 
+// Que La Famille
 const planeGreen = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(0.7, 0.7),
+    new THREE.PlaneBufferGeometry(1.2, 1.2),
     new MeshBasicMaterial({
         map: queLaFamilleTexture,
         side: THREE.DoubleSide
     })
 )
 planeGreen.rotation.x = 0
+planeGreen.rotation.y = - Math.PI / 4.5
+
+planeGreen.position.x = 1.7
 planeGreen.position.z = -1.2
 
 
