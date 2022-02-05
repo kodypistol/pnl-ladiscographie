@@ -2,10 +2,17 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {FontLoader, MeshBasicMaterial} from "three";
+import {SVGLoader} from "three/examples/jsm/loaders/SVGLoader";
+import * as dat from 'dat.gui'
+
 
 /**
  * Base
  */
+// Dat GUI
+    const gui = new dat.GUI({ width: 400 });
+
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -21,32 +28,33 @@ const queLaFamilleTexture = textureLoader.load('/assets/covers/qlf.jpg')
 
 // Font loader
 
-const fontLoader = new THREE.FontLoader();
+// const fontLoader = new THREE.FontLoader();
+//
+// fontLoader.load(
+//     '/assets/fonts/Display_Regular.js',
+//     (font) => {
+//         console.log('Font loaded.')
+//
+//         const fontShape = font.generateShapes('PNL\nla discographie', 10);
+//
+//
+//         const textGeometry = new THREE.ShapeGeometry(fontShape);
+//
+//         textGeometry.computeBoundingBox()
+//         textGeometry.translate(
+//             - (textGeometry.boundingBox.max.x - 0.2)  * 0.5, //Dividing by 2, its the same adel
+//              (textGeometry.boundingBox.max.y - 0.2) * 2,
+//             - (textGeometry.boundingBox.max.z - 0.03) * 0.5
+//         )
+//         textGeometry.center()
+//
+//
+//         const material = new THREE.MeshStandardMaterial({ color: 'white' })
+//         const text = new THREE.Mesh(textGeometry, material)
+//         scene.add(text)
+//     }
+// )
 
-fontLoader.load(
-    '/assets/fonts/Display_Regular.js',
-    (font) => {
-        console.log('Font loaded.')
-
-        const fontShape = font.generateShapes('PNL\nla discographie', 100);
-
-
-        const textGeometry = new THREE.ShapeGeometry(fontShape);
-
-        textGeometry.computeBoundingBox()
-        textGeometry.translate(
-            - (textGeometry.boundingBox.max.x - 0.2)  * 0.5, //Dividing by 2, its the same adel
-             (textGeometry.boundingBox.max.y - 0.2) * 2,
-            - (textGeometry.boundingBox.max.z - 0.03) * 0.5
-        )
-        textGeometry.center()
-
-
-        const material = new THREE.MeshStandardMaterial({ color: 'white' })
-        const text = new THREE.Mesh(textGeometry, material)
-        scene.add(text)
-    }
-)
 
 
 /**
@@ -88,7 +96,7 @@ window.addEventListener('resize', () =>
 //
 // scene.add(camera)
 
-const camera = new THREE.PerspectiveCamera(15, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(15, sizes.width / sizes.height, 0.1, 1000)
 camera.position.set(0, 0, 10)
 
 scene.add(camera)
@@ -158,6 +166,144 @@ planeGreen.position.z = -1.2
 
 scene.add(planeRed, planeBlue, planeYellow, planeGreen)
 
+/**
+ * SVG
+ */
+const svgLoader = new SVGLoader();
+const pnlTitlesFolder = gui.addFolder('TITLES');
+
+const pnlTitleSVG = svgLoader.load(
+    '/assets/svg/PNL.svg',
+    (data) =>
+    {
+        console.log(data)
+        const paths = data.paths;
+        const pnlGroup = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i ++)
+        {
+            const path = paths[i];
+
+            const material = new THREE.MeshBasicMaterial({
+                color: new THREE.Color('white'),
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+            const shapes = SVGLoader.createShapes(path);
+
+            for (let j = 0; j < shapes.length ; j++)
+            {
+                const shape = shapes[j];
+                const geometry = new THREE.ShapeBufferGeometry(shape)
+                const mesh = new THREE.Mesh(geometry, material);
+
+                pnlGroup.add(mesh);
+            }
+        }
+
+        pnlGroup.scale.set(0.010, 0.010, 0.010)
+
+        pnlGroup.rotation.y = - Math.PI / 4.5
+        pnlGroup.position.x = -1.700
+        pnlGroup.position.y = -0.100
+        pnlGroup.position.z = -1.200
+
+        scene.add(pnlGroup);
+
+        /**
+         * GUI
+         */
+
+        /**
+         *
+         *      TITLES
+         *
+         */
+
+// "PNL" Title
+        const pnlPNLTitleFolder = pnlTitlesFolder.addFolder('"PNL" title')
+        pnlPNLTitleFolder.add(pnlGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+        pnlPNLTitleFolder.add(pnlGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+        pnlPNLTitleFolder.add(pnlGroup.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+
+    },
+    (xhr) =>
+    {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded')
+    },
+    (err) =>
+    {
+        console.log('An error happened: ' + err)
+    }
+);
+
+const laDiscographieTitleSVG = svgLoader.load(
+    '/assets/svg/la-discographie.svg',
+    (data) =>
+    {
+        console.log(data)
+        const paths = data.paths;
+        const laDiscographieGroup = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i ++)
+        {
+            const path = paths[i];
+
+            const material = new THREE.MeshBasicMaterial({
+                color: new THREE.Color('white'),
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+
+            const shapes = SVGLoader.createShapes(path);
+
+            for (let j = 0; j < shapes.length ; j++)
+            {
+                const shape = shapes[j];
+                const geometry = new THREE.ShapeBufferGeometry(shape)
+                const mesh = new THREE.Mesh(geometry, material);
+
+                laDiscographieGroup.add(mesh);
+            }
+        }
+
+        laDiscographieGroup.scale.set(0.006, 0.006, 0.006)
+
+        laDiscographieGroup.rotation.y = - Math.PI / 4.5
+
+        laDiscographieGroup.position.x = -3.000
+        laDiscographieGroup.position.y = -1.250
+        laDiscographieGroup.position.z = -2.500
+
+        scene.add(laDiscographieGroup);
+
+        /**
+         * GUI
+         */
+
+        /**
+         *
+         *      TITLES
+         *
+         */
+
+// "PNL" Title
+        const pnlLaDiscographieTitleFolder = pnlTitlesFolder.addFolder('"La Discographie" title')
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+    },
+    (xhr) =>
+    {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded')
+    },
+    (err) =>
+    {
+        console.log('An error happened: ' + err)
+    }
+);
+
 // Light
 // const light = new THREE.AmbientLight( 0x222222 );
 // scene.add( light );
@@ -173,6 +319,61 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 renderer.setClearColor('#8c9aff')
+
+/**
+ * Debug Panel
+ */
+
+/**
+ * Camera
+ */
+const cameraGUIFolder = gui.addFolder('Camera');
+
+const cameraParameters = {
+    reset: () =>
+    {
+        camera.position.set(0, 0, 10)
+    }
+}
+
+cameraGUIFolder.add(cameraParameters, 'reset')
+
+
+
+/**
+ *
+ *      PNL COVERS
+ *
+ */
+const pnlCoversGUIFolder = gui.addFolder('PNL COVERS');
+
+// Deux frères GUI
+const pnlDeuxFreresFolder = pnlCoversGUIFolder.addFolder('DEUX FRÈRES');
+
+pnlDeuxFreresFolder.add(planeRed.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+pnlDeuxFreresFolder.add(planeRed.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+pnlDeuxFreresFolder.add(planeRed.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+
+// Dans la légende GUI
+const pnlDansLaLegendeFolder = pnlCoversGUIFolder.addFolder('DANS LA LÉGENDE');
+
+pnlDansLaLegendeFolder.add(planeBlue.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+pnlDansLaLegendeFolder.add(planeBlue.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+pnlDansLaLegendeFolder.add(planeBlue.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+
+// Le Monde Chico GUI
+const pnlLeMondeChicoFolder = pnlCoversGUIFolder.addFolder('LE MONDE CHICO');
+
+pnlLeMondeChicoFolder.add(planeYellow.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+pnlLeMondeChicoFolder.add(planeYellow.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+pnlLeMondeChicoFolder.add(planeYellow.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+
+// Que la famille GUI
+const pnlQueLaFamilleFolder = pnlCoversGUIFolder.addFolder('QUE LA FAMILLE');
+
+pnlQueLaFamilleFolder.add(planeGreen.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
+pnlQueLaFamilleFolder.add(planeGreen.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
+pnlQueLaFamilleFolder.add(planeGreen.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
 
 
 
