@@ -1,9 +1,10 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import {FontLoader, MeshBasicMaterial} from "three";
+import { MeshBasicMaterial } from "three";
 import {SVGLoader} from "three/examples/jsm/loaders/SVGLoader";
 import * as dat from 'dat.gui'
+import gsap from 'gsap'
 
 
 /**
@@ -25,36 +26,6 @@ const deuxFreresTexture = textureLoader.load('/assets/covers/df.png')
 const dansLaLegendeTexture = textureLoader.load('/assets/covers/dll.jpg')
 const leMondeChicoTexture = textureLoader.load('/assets/covers/lmc.png')
 const queLaFamilleTexture = textureLoader.load('/assets/covers/qlf.jpg')
-
-// Font loader
-
-// const fontLoader = new THREE.FontLoader();
-//
-// fontLoader.load(
-//     '/assets/fonts/Display_Regular.js',
-//     (font) => {
-//         console.log('Font loaded.')
-//
-//         const fontShape = font.generateShapes('PNL\nla discographie', 10);
-//
-//
-//         const textGeometry = new THREE.ShapeGeometry(fontShape);
-//
-//         textGeometry.computeBoundingBox()
-//         textGeometry.translate(
-//             - (textGeometry.boundingBox.max.x - 0.2)  * 0.5, //Dividing by 2, its the same adel
-//              (textGeometry.boundingBox.max.y - 0.2) * 2,
-//             - (textGeometry.boundingBox.max.z - 0.03) * 0.5
-//         )
-//         textGeometry.center()
-//
-//
-//         const material = new THREE.MeshStandardMaterial({ color: 'white' })
-//         const text = new THREE.Mesh(textGeometry, material)
-//         scene.add(text)
-//     }
-// )
-
 
 
 /**
@@ -96,7 +67,7 @@ window.addEventListener('resize', () =>
 //
 // scene.add(camera)
 
-const camera = new THREE.PerspectiveCamera(15, sizes.width / sizes.height, 0.1, 1000)
+const camera = new THREE.PerspectiveCamera(20, sizes.width / sizes.height, 0.1, 1000)
 camera.position.set(0, 0, 10)
 
 scene.add(camera)
@@ -172,13 +143,16 @@ scene.add(planeRed, planeBlue, planeYellow, planeGreen)
 const svgLoader = new SVGLoader();
 const pnlTitlesFolder = gui.addFolder('TITLES');
 
-const pnlTitleSVG = svgLoader.load(
+let pnlGroup = null;
+
+// Title: "PNL"
+svgLoader.load(
     '/assets/svg/PNL.svg',
     (data) =>
     {
         console.log(data)
         const paths = data.paths;
-        const pnlGroup = new THREE.Group();
+        pnlGroup = new THREE.Group();
 
         for (let i = 0; i < paths.length; i ++)
         {
@@ -202,11 +176,11 @@ const pnlTitleSVG = svgLoader.load(
             }
         }
 
-        pnlGroup.scale.set(0.010, 0.010, 0.010)
+        pnlGroup.scale.set(0.014, 0.014, 0.014)
 
         pnlGroup.rotation.y = - Math.PI / 4.5
-        pnlGroup.position.x = -1.700
-        pnlGroup.position.y = -0.100
+        pnlGroup.position.x = -2.110
+        pnlGroup.position.y = -0.410
         pnlGroup.position.z = -1.200
 
         scene.add(pnlGroup);
@@ -221,7 +195,7 @@ const pnlTitleSVG = svgLoader.load(
          *
          */
 
-// "PNL" Title
+// "PNL" GUI DEBUG Title
         const pnlPNLTitleFolder = pnlTitlesFolder.addFolder('"PNL" title')
         pnlPNLTitleFolder.add(pnlGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
         pnlPNLTitleFolder.add(pnlGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
@@ -238,13 +212,16 @@ const pnlTitleSVG = svgLoader.load(
     }
 );
 
-const laDiscographieTitleSVG = svgLoader.load(
+let laDiscographieGroup = null;
+
+// Title: "La Discographie"
+svgLoader.load(
     '/assets/svg/la-discographie.svg',
     (data) =>
     {
         console.log(data)
         const paths = data.paths;
-        const laDiscographieGroup = new THREE.Group();
+        laDiscographieGroup = new THREE.Group();
 
         for (let i = 0; i < paths.length; i ++)
         {
@@ -268,13 +245,13 @@ const laDiscographieTitleSVG = svgLoader.load(
             }
         }
 
-        laDiscographieGroup.scale.set(0.006, 0.006, 0.006)
+        laDiscographieGroup.scale.set(0.005, 0.005, 0.005)
 
         laDiscographieGroup.rotation.y = - Math.PI / 4.5
 
-        laDiscographieGroup.position.x = -3.000
-        laDiscographieGroup.position.y = -1.250
-        laDiscographieGroup.position.z = -2.500
+        laDiscographieGroup.position.x = -2.710
+        laDiscographieGroup.position.y = -1.210
+        laDiscographieGroup.position.z = -1.510
 
         scene.add(laDiscographieGroup);
 
@@ -288,7 +265,7 @@ const laDiscographieTitleSVG = svgLoader.load(
          *
          */
 
-// "PNL" Title
+// "La Discographie" GUI DEBUG Title
         const pnlLaDiscographieTitleFolder = pnlTitlesFolder.addFolder('"La Discographie" title')
         pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
         pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
@@ -382,6 +359,113 @@ pnlQueLaFamilleFolder.add(planeGreen.position, 'z').min(-5).max(10).step(0.01).n
  */
 const clock = new THREE.Clock()
 let lastElapsedTime = 0
+
+const startingAnimation = () =>
+{
+
+
+    setTimeout(() =>
+    {
+        pnlGroup.rotation.x = 0
+        pnlGroup.rotation.y = 0
+        pnlGroup.rotation.z = 0
+        pnlGroup.position.x = -2.100
+        pnlGroup.position.y = -0.410
+        pnlGroup.position.z = -1.200
+        // pnlGroup.material.color = new THREE.Color('ED6A65')
+        for(let i = 0 ; i < pnlGroup.children.length ; i++)
+        {
+            pnlGroup.children[i].material.color = new THREE.Color('#ED6A65')
+        }
+
+        for(let i = 0 ; i < laDiscographieGroup.children.length ; i++)
+        {
+            laDiscographieGroup.children[i].material.color = new THREE.Color('#71F9FC')
+        }
+
+        laDiscographieGroup.rotation.x = 0
+        laDiscographieGroup.rotation.y = 0
+        laDiscographieGroup.rotation.z = 0
+        laDiscographieGroup.position.x = -1.550
+        laDiscographieGroup.position.y = -1.210
+        laDiscographieGroup.position.z = -1.5
+
+        planeRed.position.x = 0
+        planeRed.position.y = 0
+        planeRed.position.z = -1.81
+        planeRed.rotation.x = 0
+        planeRed.rotation.y = 0
+        planeRed.rotation.z = 0
+
+        planeBlue.position.x = -0.02
+        planeBlue.position.y = 0
+        planeBlue.position.z = -2.41
+        planeBlue.rotation.x = 0
+        planeBlue.rotation.y = 0
+        planeBlue.rotation.z = 0
+
+        planeYellow.position.x = -0.02
+        planeYellow.position.y = 0
+        planeYellow.position.z = -2.91
+        planeYellow.rotation.x = 0
+        planeYellow.rotation.y = 0
+        planeYellow.rotation.z = 0
+
+        planeGreen.position.x = -0.02
+        planeGreen.position.y = 0
+        planeGreen.position.z = -3.31
+        planeGreen.rotation.x = 0
+        planeGreen.rotation.y = 0
+        planeGreen.rotation.z = 0
+
+        // const timelineStartingAnimation = gsap.timeline(
+        //     {
+        //         repeat: 0,
+        //         onComplete: secondAnimation
+        //     })
+        // timelineStartingAnimation.to(pnlGroup.position,
+        //     {
+        //         duration: 1,
+        //         delay: 1,
+        //         y: 2
+        //     });
+        //
+        // timelineStartingAnimation.to(pnlGroup.position,
+        //     {
+        //         duration: 1,
+        //         delay: 2,
+        //         y: -2 });
+
+    }, 1000)
+}
+
+const secondAnimation = () =>
+{
+    // const timelineSecondAnimation = gsap.timeline(
+    //     {
+    //         repeat: 0,
+    //     })
+    // timelineSecondAnimation.to(pnlGroup.position,
+    //     {
+    //         duration: 1,
+    //         delay: 1,
+    //         y: 1
+    //     });
+    //
+    // timelineSecondAnimation.to(pnlGroup.position,
+    //     {
+    //         duration: 1,
+    //         delay: 2,
+    //         y: -3 });
+}
+
+
+startingAnimation();
+
+
+
+
+
 
 const tick = () =>
 {
