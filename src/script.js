@@ -85,9 +85,11 @@ const planeRed = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(2, 2),
     new MeshBasicMaterial({
         side: THREE.DoubleSide,
-        map: deuxFreresTexture
+        map: deuxFreresTexture,
+
     })
 )
+planeRed.name = 'DF'
 
     planeRed.position.set(-7, 0, 0)
 
@@ -99,9 +101,11 @@ const planeBlue = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(1.9, 1.9),
     new MeshBasicMaterial({
         map: dansLaLegendeTexture,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
     })
 )
+planeBlue.name = 'DLL'
+
 planeBlue.rotation.x = 0
 planeBlue.rotation.y = - Math.PI / 4.5
 
@@ -117,6 +121,8 @@ const planeYellow = new THREE.Mesh(
         side: THREE.DoubleSide,
     })
 )
+planeYellow.name = 'LMC'
+
 planeYellow.rotation.x = 0
 planeYellow.rotation.y = - Math.PI / 4.5
 
@@ -128,9 +134,13 @@ const planeGreen = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(1.2, 1.2),
     new MeshBasicMaterial({
         map: queLaFamilleTexture,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        name: 'QLF'
+
     })
 )
+planeGreen.name = 'QLF'
+
 planeGreen.rotation.x = 0
 planeGreen.rotation.y = - Math.PI / 4.5
 
@@ -288,6 +298,7 @@ svgLoader.load(
     }
 );
 
+
 // Light
 // const light = new THREE.AmbientLight( 0x222222 );
 // scene.add( light );
@@ -302,7 +313,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-renderer.setClearColor('#364167')
+renderer.setClearColor('#0C1020')
+
 
 /**
  * Debug Panel
@@ -665,8 +677,15 @@ const secondAnimation = () =>
 startingAnimation();
 
 /**
- * Mouse follower
+ * Mouse follower & Raycaster
  */
+
+/**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
 
 const cursor = {
     x: 0,
@@ -675,23 +694,43 @@ const cursor = {
 
 window.addEventListener('mousemove', (event) => {
 
+
+    // Cursor for camera controlling
     cursor.x = (event.clientX / sizes.width - 0.5) / 6;
     cursor.y = -(event.clientY / sizes.height - 0.5) / 6;
 
     if(cameraControl === true)
     {
-
         camera.lookAt(cursor.x, cursor.y)
-        // for(let i = 0 ; i < 1 ; i+ 0.1)
-        // {
-        //     //
-        // }
-
     }
 
+    //Mouse for Raycaster
+    mouse.x = event.clientX / sizes.width * 2 - 1;
+    mouse.y = - (event.clientY / sizes.height * 2 - 1);
 
 });
 
+let currentIntersect = 1;
+
+const deuxFreresHover = () =>
+{
+    console.log('deux freres')
+}
+
+const dansLaLegendeHover = () =>
+{
+    console.log('dll')
+}
+
+const leMondeChicoHover = () =>
+{
+    console.log('lmc')
+}
+
+const queLaFamilleHover = () =>
+{
+    console.log('qlf')
+}
 
 const tick = () =>
 {
@@ -699,13 +738,54 @@ const tick = () =>
     const deltaTime = elapsedTime - lastElapsedTime
     lastElapsedTime = elapsedTime
 
-    // Update cube
-    // plane.rotation.x = (Math.PI * lastElapsedTime) * 0.3
-    // plane.rotation.z = (Math.PI * lastElapsedTime) * 0.3
-    // console.log(plane.rotation)
+    //Raycaster
+    if(cameraControl)
+    {
+        raycaster.setFromCamera(mouse, camera)
 
-    // Update controls
-    // controls.update()
+        const hoveringElements = [planeRed, planeBlue, planeYellow, planeGreen]
+        const intersectObjects = raycaster.intersectObjects(hoveringElements)
+
+        if (intersectObjects.length)
+        {
+            if (currentIntersect === null)
+            {
+                switch (intersectObjects[0].object.name)
+                {
+                    case 'DF':
+                        deuxFreresHover()
+                        break;
+                    case 'DLL':
+                        dansLaLegendeHover()
+                        break;
+                    case 'LMC':
+                        leMondeChicoHover()
+                        break;
+                    case 'QLF':
+                        queLaFamilleHover()
+                        break;
+                    default:
+                }
+                console.log(intersectObjects[0].object.name)
+            }
+            currentIntersect = intersectObjects[0]
+
+        }
+        else
+        {
+            if (currentIntersect)
+            {
+                console.log('mouse leave')
+            }
+            currentIntersect = null;
+        }
+
+    }
+
+
+
+
+
 
     // Render
     renderer.render(scene, camera)
