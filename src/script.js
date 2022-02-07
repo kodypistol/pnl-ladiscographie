@@ -88,6 +88,7 @@ const planeRed = new THREE.Mesh(
         map: deuxFreresTexture
     })
 )
+
     planeRed.rotation.x = 0
     planeRed.rotation.y = - Math.PI / 4.5
 
@@ -366,12 +367,7 @@ const startingAnimation = () =>
 
     setTimeout(() =>
     {
-        pnlGroup.rotation.x = 0
-        pnlGroup.rotation.y = 0
-        pnlGroup.rotation.z = 0
-        pnlGroup.position.x = -2.100
-        pnlGroup.position.y = -0.410
-        pnlGroup.position.z = -1.200
+
         // pnlGroup.material.color = new THREE.Color('ED6A65')
         for(let i = 0 ; i < pnlGroup.children.length ; i++)
         {
@@ -383,58 +379,105 @@ const startingAnimation = () =>
             laDiscographieGroup.children[i].material.color = new THREE.Color('#71F9FC')
         }
 
-        laDiscographieGroup.rotation.x = 0
-        laDiscographieGroup.rotation.y = 0
-        laDiscographieGroup.rotation.z = 0
-        laDiscographieGroup.position.x = -1.550
-        laDiscographieGroup.position.y = -1.210
-        laDiscographieGroup.position.z = -1.5
+        pnlGroup.position.set(-2.100,-0.410,-1.200)
+        pnlGroup.rotation.set(0,0,0)
 
-        planeRed.position.x = 0
-        planeRed.position.y = 0
-        planeRed.position.z = -1.81
-        planeRed.rotation.x = 0
-        planeRed.rotation.y = 0
-        planeRed.rotation.z = 0
 
-        planeBlue.position.x = -0.02
-        planeBlue.position.y = 0
-        planeBlue.position.z = -2.41
-        planeBlue.rotation.x = 0
-        planeBlue.rotation.y = 0
-        planeBlue.rotation.z = 0
 
-        planeYellow.position.x = -0.02
-        planeYellow.position.y = 0
-        planeYellow.position.z = -2.91
-        planeYellow.rotation.x = 0
-        planeYellow.rotation.y = 0
-        planeYellow.rotation.z = 0
 
-        planeGreen.position.x = -0.02
-        planeGreen.position.y = 0
-        planeGreen.position.z = -3.31
-        planeGreen.rotation.x = 0
-        planeGreen.rotation.y = 0
-        planeGreen.rotation.z = 0
+        laDiscographieGroup.position.set(-1.550, -1.210, -1.500)
+        laDiscographieGroup.rotation.set(0,0,0)
 
-        // const timelineStartingAnimation = gsap.timeline(
-        //     {
-        //         repeat: 0,
-        //         onComplete: secondAnimation
-        //     })
-        // timelineStartingAnimation.to(pnlGroup.position,
-        //     {
-        //         duration: 1,
-        //         delay: 1,
-        //         y: 2
-        //     });
+        planeRed.position.set(0, 0, -1.81)
+        planeRed.rotation.set(0,0,0)
+
+        planeBlue.position.set(-0.02, 0, -2.41)
+        planeBlue.rotation.set(0,0,0)
+
+        planeYellow.position.set(-0.02, 0, -2.91)
+        planeYellow.rotation.set(0, 0, 0)
+
+        planeGreen.position.set(-0.02, 0, -3.31)
+        planeGreen.rotation.set(0, 0, 0)
+
+
+
+
+        const firstAnimation = () =>
+        {
+            for(let children of pnlGroup.children)
+            {
+                children.material.transparent = true
+                children.material.opacity = 0
+
+                gsap.to(children.material,
+                    {
+                        duration: 1,
+                        delay: 1,
+                        opacity:1
+                    });
+
+            }
+
+            gsap.to(pnlGroup.scale,
+                {
+                    duration: 1,
+                    delay: 1,
+                    x: 0.016,
+                    y: 0.016,
+                    z:0.016
+
+                });
+
+
+            gsap.to(laDiscographieGroup.scale,
+                {
+                    duration: 1,
+                    delay: 1,
+                    x: 0.0055,
+                    y: 0.0055,
+                    z:0.0055
+
+                });
+
+            for(let children of laDiscographieGroup.children)
+            {
+                children.material.transparent = true
+                children.material.opacity = 0
+
+                gsap.to(children.material,
+                    {
+                        duration: 1,
+                        delay: 1,
+                        opacity:1
+                    });
+            }
+        }
+
+
+
+        const timelineStartingAnimation = gsap.timeline(
+            {
+                repeat: 0,
+                // onComplete: secondAnimation
+            })
+
+        firstAnimation()
+        // for(let children of laDiscographieGroup.children)
+        // {
+        //     children.material.transparent = true
+        //     children.material.opacity = 0
         //
-        // timelineStartingAnimation.to(pnlGroup.position,
-        //     {
-        //         duration: 1,
-        //         delay: 2,
-        //         y: -2 });
+        //     timelineStartingAnimation.to(children.material,
+        //         {
+        //             duration: 1,
+        //             delay: 1,
+        //             opacity:1
+        //         });
+        // }
+
+
+
 
     }, 1000)
 }
