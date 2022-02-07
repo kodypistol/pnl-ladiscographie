@@ -89,6 +89,8 @@ const planeRed = new THREE.Mesh(
     })
 )
 
+    planeRed.position.set(-7, 0, 0)
+
     planeRed.rotation.x = 0
     planeRed.rotation.y = - Math.PI / 4.5
 
@@ -103,7 +105,7 @@ const planeBlue = new THREE.Mesh(
 planeBlue.rotation.x = 0
 planeBlue.rotation.y = - Math.PI / 4.5
 
-planeBlue.position.x = 0.7
+planeBlue.position.x = 7
 planeBlue.position.z = -0.8
 
 
@@ -118,7 +120,7 @@ const planeYellow = new THREE.Mesh(
 planeYellow.rotation.x = 0
 planeYellow.rotation.y = - Math.PI / 4.5
 
-planeYellow.position.x = 1.2
+planeYellow.position.x = -7
 planeYellow.position.z = -0.8
 
 // Que La Famille
@@ -132,7 +134,7 @@ const planeGreen = new THREE.Mesh(
 planeGreen.rotation.x = 0
 planeGreen.rotation.y = - Math.PI / 4.5
 
-planeGreen.position.x = 1.7
+planeGreen.position.x = 7
 planeGreen.position.z = -1.2
 
 
@@ -162,7 +164,9 @@ svgLoader.load(
             const material = new THREE.MeshBasicMaterial({
                 color: new THREE.Color('white'),
                 side: THREE.DoubleSide,
-                depthWrite: false
+                depthWrite: false,
+                transparent: true,
+                opacity: 0
             });
 
             const shapes = SVGLoader.createShapes(path);
@@ -198,9 +202,9 @@ svgLoader.load(
 
 // "PNL" GUI DEBUG Title
         const pnlPNLTitleFolder = pnlTitlesFolder.addFolder('"PNL" title')
-        pnlPNLTitleFolder.add(pnlGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-        pnlPNLTitleFolder.add(pnlGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-        pnlPNLTitleFolder.add(pnlGroup.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+        pnlPNLTitleFolder.add(pnlGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlPNLTitleFolder.add(pnlGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlPNLTitleFolder.add(pnlGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
     },
     (xhr) =>
@@ -231,7 +235,9 @@ svgLoader.load(
             const material = new THREE.MeshBasicMaterial({
                 color: new THREE.Color('white'),
                 side: THREE.DoubleSide,
-                depthWrite: false
+                depthWrite: false,
+                transparent: true,
+                opacity: 0,
             });
 
             const shapes = SVGLoader.createShapes(path);
@@ -268,9 +274,9 @@ svgLoader.load(
 
 // "La Discographie" GUI DEBUG Title
         const pnlLaDiscographieTitleFolder = pnlTitlesFolder.addFolder('"La Discographie" title')
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
     },
     (xhr) =>
     {
@@ -296,7 +302,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-renderer.setClearColor('#8c9aff')
+renderer.setClearColor('#364167')
 
 /**
  * Debug Panel
@@ -328,30 +334,30 @@ const pnlCoversGUIFolder = gui.addFolder('PNL COVERS');
 // Deux frères GUI
 const pnlDeuxFreresFolder = pnlCoversGUIFolder.addFolder('DEUX FRÈRES');
 
-pnlDeuxFreresFolder.add(planeRed.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-pnlDeuxFreresFolder.add(planeRed.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-pnlDeuxFreresFolder.add(planeRed.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+pnlDeuxFreresFolder.add(planeRed.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDeuxFreresFolder.add(planeRed.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDeuxFreresFolder.add(planeRed.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
 // Dans la légende GUI
 const pnlDansLaLegendeFolder = pnlCoversGUIFolder.addFolder('DANS LA LÉGENDE');
 
-pnlDansLaLegendeFolder.add(planeBlue.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-pnlDansLaLegendeFolder.add(planeBlue.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-pnlDansLaLegendeFolder.add(planeBlue.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+pnlDansLaLegendeFolder.add(planeBlue.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDansLaLegendeFolder.add(planeBlue.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDansLaLegendeFolder.add(planeBlue.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
 // Le Monde Chico GUI
 const pnlLeMondeChicoFolder = pnlCoversGUIFolder.addFolder('LE MONDE CHICO');
 
-pnlLeMondeChicoFolder.add(planeYellow.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-pnlLeMondeChicoFolder.add(planeYellow.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-pnlLeMondeChicoFolder.add(planeYellow.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+pnlLeMondeChicoFolder.add(planeYellow.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlLeMondeChicoFolder.add(planeYellow.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlLeMondeChicoFolder.add(planeYellow.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
 // Que la famille GUI
 const pnlQueLaFamilleFolder = pnlCoversGUIFolder.addFolder('QUE LA FAMILLE');
 
-pnlQueLaFamilleFolder.add(planeGreen.position, 'x').min(-5).max(10).step(0.01).name('Position : X AXIS');
-pnlQueLaFamilleFolder.add(planeGreen.position, 'y').min(-5).max(10).step(0.01).name('Position : Y AXIS');
-pnlQueLaFamilleFolder.add(planeGreen.position, 'z').min(-5).max(10).step(0.01).name('Position : Z AXIS');
+pnlQueLaFamilleFolder.add(planeGreen.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlQueLaFamilleFolder.add(planeGreen.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlQueLaFamilleFolder.add(planeGreen.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
 
 
@@ -363,6 +369,11 @@ let lastElapsedTime = 0
 
 const startingAnimation = () =>
 {
+
+    gsap.to(renderer, {
+        setClearColor: '#4F5E92',
+        duration: 2
+    })
 
 
     setTimeout(() =>
@@ -388,16 +399,16 @@ const startingAnimation = () =>
         laDiscographieGroup.position.set(-1.550, -1.210, -1.500)
         laDiscographieGroup.rotation.set(0,0,0)
 
-        planeRed.position.set(0, 0, -1.81)
+        planeRed.position.set(-7, 0, -1.81)
         planeRed.rotation.set(0,0,0)
 
-        planeBlue.position.set(-0.02, 0, -2.41)
+        planeBlue.position.set(7, 0, -2.41)
         planeBlue.rotation.set(0,0,0)
 
-        planeYellow.position.set(-0.02, 0, -2.91)
+        planeYellow.position.set(-7, 0, -2.91)
         planeYellow.rotation.set(0, 0, 0)
 
-        planeGreen.position.set(-0.02, 0, -3.31)
+        planeGreen.position.set(7, 0, -3.31)
         planeGreen.rotation.set(0, 0, 0)
 
 
@@ -417,6 +428,19 @@ const startingAnimation = () =>
                         opacity:1
                     });
 
+            }
+
+            for(let children of laDiscographieGroup.children)
+            {
+                children.material.transparent = true
+                children.material.opacity = 0
+
+                gsap.to(children.material,
+                    {
+                        duration: 1,
+                        delay: 1,
+                        opacity:1
+                    });
             }
 
             gsap.to(pnlGroup.scale,
@@ -440,18 +464,7 @@ const startingAnimation = () =>
 
                 });
 
-            for(let children of laDiscographieGroup.children)
-            {
-                children.material.transparent = true
-                children.material.opacity = 0
 
-                gsap.to(children.material,
-                    {
-                        duration: 1,
-                        delay: 1,
-                        opacity:1
-                    });
-            }
         }
 
 
@@ -459,47 +472,188 @@ const startingAnimation = () =>
         const timelineStartingAnimation = gsap.timeline(
             {
                 repeat: 0,
-                // onComplete: secondAnimation
+                onComplete: secondAnimation
             })
 
+        // DF & LMC
+        timelineStartingAnimation.to(planeRed.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+        timelineStartingAnimation.to(planeYellow.position,
+            {
+                duration: 0.7,
+                delay: 0,
+                x:0
+            }, 2.1)
+
+        // DLL & QLF
+        timelineStartingAnimation.to(planeBlue.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+        timelineStartingAnimation.to(planeGreen.position,
+            {
+                duration: 0.7,
+                delay: 0,
+                x:0
+            }, 2.1)
+
         firstAnimation()
-        // for(let children of laDiscographieGroup.children)
-        // {
-        //     children.material.transparent = true
-        //     children.material.opacity = 0
-        //
-        //     timelineStartingAnimation.to(children.material,
-        //         {
-        //             duration: 1,
-        //             delay: 1,
-        //             opacity:1
-        //         });
-        // }
 
 
 
 
-    }, 1000)
+    }, 500)
 }
 
 const secondAnimation = () =>
 {
-    // const timelineSecondAnimation = gsap.timeline(
-    //     {
-    //         repeat: 0,
-    //     })
-    // timelineSecondAnimation.to(pnlGroup.position,
-    //     {
-    //         duration: 1,
-    //         delay: 1,
-    //         y: 1
-    //     });
-    //
-    // timelineSecondAnimation.to(pnlGroup.position,
-    //     {
-    //         duration: 1,
-    //         delay: 2,
-    //         y: -3 });
+    const timelineSecondAnimation = gsap.timeline(
+        {
+            repeat: 0,
+        })
+
+    //DF: position
+    timelineSecondAnimation.to(planeRed.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0,
+            y:0,
+            z:0
+        },0)
+
+    //DF: rotation
+    timelineSecondAnimation.to(planeRed.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0,
+            y: - Math.PI / 4.5,
+            z: 0
+        },0)
+
+    //DLL: position
+    timelineSecondAnimation.to(planeBlue.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0.7,
+            y:0,
+            z:-0.8
+        },0)
+
+    //DLL: rotation
+    timelineSecondAnimation.to(planeBlue.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0,
+            y: - Math.PI / 4.5,
+            z: 0
+        },0)
+
+    //LMC: position
+    timelineSecondAnimation.to(planeYellow.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:1.2,
+            y:0,
+            z:-0.8
+        },0)
+
+    //LMC: rotation
+    timelineSecondAnimation.to(planeYellow.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0,
+            y: - Math.PI / 4.5,
+            z: 0
+        },0)
+
+    //QLF: position
+    timelineSecondAnimation.to(planeGreen.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:1.7,
+            y:0,
+            z:-1.2
+        },0)
+
+    //QLF: rotation
+    timelineSecondAnimation.to(planeGreen.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0,
+            y: - Math.PI / 4.5,
+            z: 0
+        },0)
+
+    //"PNL" title: position
+    timelineSecondAnimation.to(pnlGroup.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:-2.110,
+            y:-0.410,
+            z:-1.200
+        },0)
+
+    //"PNL" title: scale
+    timelineSecondAnimation.to(pnlGroup.scale,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0.014,
+            y:0.014,
+            z:0.014
+        },0)
+
+    //"PNL" title: rotation
+    timelineSecondAnimation.to(pnlGroup.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            y: - Math.PI / 4.5
+        },0)
+
+    //"la discographie" title: position
+    timelineSecondAnimation.to(laDiscographieGroup.position,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:-2.710,
+            y:-1.210,
+            z:-1.510
+        },0)
+
+    //"la discographie" title: scale
+    timelineSecondAnimation.to(laDiscographieGroup.scale,
+        {
+            duration: 1,
+            delay: 0.5,
+            x:0.005,
+            y:0.005,
+            z:0.005
+        },0)
+
+    //"la discographie" title: rotation
+    timelineSecondAnimation.to(laDiscographieGroup.rotation,
+        {
+            duration: 1,
+            delay: 0.5,
+            y: - Math.PI / 4.5
+        },0)
+
 }
 
 
