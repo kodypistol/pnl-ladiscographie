@@ -54,25 +54,15 @@ window.addEventListener('resize', () =>
 /**
  * Camera
  */
-// Base camera
-//     const aspectRatio = sizes.width / sizes.height
-//     const camera = new THREE.OrthographicCamera(
-//     aspectRatio * - 1,
-//     aspectRatio * 1,
-//     1,
-//     - 1,
-//     0.01, 100
-// )
-// camera.position.z = -10
-//
-// scene.add(camera)
+
 
 const camera = new THREE.PerspectiveCamera(20, sizes.width / sizes.height, 0.1, 1000)
 camera.position.set(0, 0, 10)
 
 scene.add(camera)
 
-// Controls
+
+// old Controls
 // const controls = new OrbitControls(camera, canvas)
 // controls.enableDamping = true
 
@@ -212,10 +202,30 @@ svgLoader.load(
 
 // "PNL" GUI DEBUG Title
         const pnlPNLTitleFolder = pnlTitlesFolder.addFolder('"PNL" title')
-        pnlPNLTitleFolder.add(pnlGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-        pnlPNLTitleFolder.add(pnlGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-        pnlPNLTitleFolder.add(pnlGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+        const pnlPNLTitleFolderPositionFolder = pnlPNLTitleFolder.addFolder('Position (X,Y,Z)')
+        const pnlPNLTitleFolderRotationFolder = pnlPNLTitleFolder.addFolder('Rotation (X,Y,Z)')
+        const pnlPNLTitleFolderScaleFolder = pnlPNLTitleFolder.addFolder('Scale')
 
+
+        //Position GUI
+        pnlPNLTitleFolderPositionFolder.add(pnlGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlPNLTitleFolderPositionFolder.add(pnlGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlPNLTitleFolderPositionFolder.add(pnlGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+        //Rotation GUI
+        pnlPNLTitleFolderRotationFolder.add(pnlGroup.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlPNLTitleFolderRotationFolder.add(pnlGroup.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlPNLTitleFolderRotationFolder.add(pnlGroup.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+        // Scale GUI
+        const pnlPNLTitleScaleParameters = {
+            scale: pnlGroup.scale.x
+        }
+
+        pnlPNLTitleFolderScaleFolder.add(pnlPNLTitleScaleParameters, 'scale').min(0).max(0.030).step(0.0001).name('Scale').onFinishChange(() =>
+        {
+            pnlGroup.scale.set(pnlPNLTitleScaleParameters.scale, pnlPNLTitleScaleParameters.scale, pnlPNLTitleScaleParameters.scale)
+        });
     },
     (xhr) =>
     {
@@ -282,11 +292,31 @@ svgLoader.load(
          *
          */
 
-// "La Discographie" GUI DEBUG Title
+            // "PNL" GUI DEBUG Title
         const pnlLaDiscographieTitleFolder = pnlTitlesFolder.addFolder('"La Discographie" title')
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-        pnlLaDiscographieTitleFolder.add(laDiscographieGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+        const pnlLaDiscographieTitleFolderPositionFolder = pnlLaDiscographieTitleFolder.addFolder('Position (X,Y,Z)')
+        const pnlLaDiscographieTitleFolderRotationFolder = pnlLaDiscographieTitleFolder.addFolder('Rotation (X,Y,Z)')
+        const pnlLaDiscographieTitleFolderScaleFolder = pnlLaDiscographieTitleFolder.addFolder('Scale (X,Y,Z)')
+
+        //Position GUI
+        pnlLaDiscographieTitleFolderPositionFolder.add(laDiscographieGroup.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlLaDiscographieTitleFolderPositionFolder.add(laDiscographieGroup.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlLaDiscographieTitleFolderPositionFolder.add(laDiscographieGroup.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+        //Rotation GUI
+        pnlLaDiscographieTitleFolderRotationFolder.add(laDiscographieGroup.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+        pnlLaDiscographieTitleFolderRotationFolder.add(laDiscographieGroup.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+        pnlLaDiscographieTitleFolderRotationFolder.add(laDiscographieGroup.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+        //Scale GUI
+        const laDiscographieScaleParameters = {
+            scale: laDiscographieGroup.scale.x
+        }
+        pnlLaDiscographieTitleFolderScaleFolder.add(laDiscographieScaleParameters, 'scale').min(0).max(0.015).step(0.0001).name('Scale').onFinishChange(() =>
+        {
+            laDiscographieGroup.scale.set(laDiscographieScaleParameters.scale, laDiscographieScaleParameters.scale, laDiscographieScaleParameters.scale)
+        });
+
     },
     (xhr) =>
     {
@@ -321,22 +351,6 @@ renderer.setClearColor('#0C1020')
  */
 
 /**
- * Camera
- */
-const cameraGUIFolder = gui.addFolder('Camera');
-
-const cameraParameters = {
-    reset: () =>
-    {
-        camera.position.set(0, 0, 10)
-    }
-}
-
-cameraGUIFolder.add(cameraParameters, 'reset')
-
-
-
-/**
  *
  *      PNL COVERS
  *
@@ -345,32 +359,169 @@ const pnlCoversGUIFolder = gui.addFolder('PNL COVERS');
 
 // Deux frères GUI
 const pnlDeuxFreresFolder = pnlCoversGUIFolder.addFolder('DEUX FRÈRES');
+const pnlDeuxFreresFolderPositionFolder = pnlDeuxFreresFolder.addFolder('Position (X,Y,Z)');
+const pnlDeuxFreresFolderRotationFolder = pnlDeuxFreresFolder.addFolder('Rotation (X,Y,Z)');
+const pnlDeuxFreresFolderScaleFolder = pnlDeuxFreresFolder.addFolder('Scale');
 
-pnlDeuxFreresFolder.add(planeRed.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-pnlDeuxFreresFolder.add(planeRed.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-pnlDeuxFreresFolder.add(planeRed.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+    // Position
+pnlDeuxFreresFolderPositionFolder.add(planeRed.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDeuxFreresFolderPositionFolder.add(planeRed.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDeuxFreresFolderPositionFolder.add(planeRed.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Rotation
+pnlDeuxFreresFolderRotationFolder.add(planeRed.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDeuxFreresFolderRotationFolder.add(planeRed.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDeuxFreresFolderRotationFolder.add(planeRed.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Scale
+const pnlDeuxFreresScaleParameters = {
+    scale: planeRed.scale.x
+}
+pnlDeuxFreresFolderScaleFolder.add(pnlDeuxFreresScaleParameters, 'scale').min(0.5).max(2).step(0.001).name('Scale').onFinishChange(() =>
+{
+    planeRed.scale.set(pnlDeuxFreresScaleParameters.scale, pnlDeuxFreresScaleParameters.scale, pnlDeuxFreresScaleParameters.scale)
+});
 
 // Dans la légende GUI
 const pnlDansLaLegendeFolder = pnlCoversGUIFolder.addFolder('DANS LA LÉGENDE');
+const pnlDansLaLegendeFolderPositionFolder = pnlDansLaLegendeFolder.addFolder('Position (X,Y,Z)');
+const pnlDansLaLegendeFolderRotationFolder = pnlDansLaLegendeFolder.addFolder('Rotation (X,Y,Z)');
+const pnlDansLaLegendeFolderScaleFolder = pnlDansLaLegendeFolder.addFolder('Scale');
 
-pnlDansLaLegendeFolder.add(planeBlue.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-pnlDansLaLegendeFolder.add(planeBlue.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-pnlDansLaLegendeFolder.add(planeBlue.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+    // Position
+pnlDansLaLegendeFolderPositionFolder.add(planeBlue.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDansLaLegendeFolderPositionFolder.add(planeBlue.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDansLaLegendeFolderPositionFolder.add(planeBlue.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Rotation
+pnlDansLaLegendeFolderRotationFolder.add(planeBlue.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlDansLaLegendeFolderRotationFolder.add(planeBlue.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlDansLaLegendeFolderRotationFolder.add(planeBlue.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Scale
+const pnlDansLaLegendeScaleParameters = {
+    scale: planeBlue.scale.x
+}
+pnlDansLaLegendeFolderScaleFolder.add(pnlDansLaLegendeScaleParameters, 'scale').min(0.5).max(2).step(0.001).name('Scale').onFinishChange(() =>
+{
+    planeBlue.scale.set(pnlDansLaLegendeScaleParameters.scale, pnlDansLaLegendeScaleParameters.scale, pnlDansLaLegendeScaleParameters.scale)
+});
 
 // Le Monde Chico GUI
 const pnlLeMondeChicoFolder = pnlCoversGUIFolder.addFolder('LE MONDE CHICO');
+const pnlLeMondeChicoFolderPositionFolder = pnlLeMondeChicoFolder.addFolder('Position (X,Y,Z)');
+const pnlLeMondeChicoFolderRotationFolder = pnlLeMondeChicoFolder.addFolder('Rotation (X,Y,Z)');
+const pnlLeMondeChicoFolderScaleFolder = pnlLeMondeChicoFolder.addFolder('Scale');
 
-pnlLeMondeChicoFolder.add(planeYellow.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-pnlLeMondeChicoFolder.add(planeYellow.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-pnlLeMondeChicoFolder.add(planeYellow.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+    // Position
+pnlLeMondeChicoFolderPositionFolder.add(planeYellow.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlLeMondeChicoFolderPositionFolder.add(planeYellow.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlLeMondeChicoFolderPositionFolder.add(planeYellow.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Rotation
+pnlLeMondeChicoFolderRotationFolder.add(planeYellow.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlLeMondeChicoFolderRotationFolder.add(planeYellow.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlLeMondeChicoFolderRotationFolder.add(planeYellow.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+    // Scale
+const pnlLeMondeChicoScaleParameters = {
+    scale: planeYellow.scale.x
+}
+pnlLeMondeChicoFolderScaleFolder.add(pnlLeMondeChicoScaleParameters, 'scale').min(0.5).max(2).step(0.001).name('Scale').onFinishChange(() =>
+{
+    planeYellow.scale.set(pnlLeMondeChicoScaleParameters.scale, pnlLeMondeChicoScaleParameters.scale, pnlLeMondeChicoScaleParameters.scale)
+});
 
 // Que la famille GUI
 const pnlQueLaFamilleFolder = pnlCoversGUIFolder.addFolder('QUE LA FAMILLE');
+const pnlQueLaFamilleFolderPositionFolder = pnlQueLaFamilleFolder.addFolder('Position (X,Y,Z)');
+const pnlQueLaFamilleFolderRotationFolder = pnlQueLaFamilleFolder.addFolder('Rotation (X,Y,Z)');
+const pnlQueLaFamilleFolderScaleFolder = pnlQueLaFamilleFolder.addFolder('Scale');
 
-pnlQueLaFamilleFolder.add(planeGreen.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
-pnlQueLaFamilleFolder.add(planeGreen.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
-pnlQueLaFamilleFolder.add(planeGreen.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+// Position
+pnlQueLaFamilleFolderPositionFolder.add(planeGreen.position, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlQueLaFamilleFolderPositionFolder.add(planeGreen.position, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlQueLaFamilleFolderPositionFolder.add(planeGreen.position, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
 
+// Rotation
+pnlQueLaFamilleFolderRotationFolder.add(planeGreen.rotation, 'x').min(-15).max(10).step(0.01).name('Position : X AXIS');
+pnlQueLaFamilleFolderRotationFolder.add(planeGreen.rotation, 'y').min(-15).max(10).step(0.01).name('Position : Y AXIS');
+pnlQueLaFamilleFolderRotationFolder.add(planeGreen.rotation, 'z').min(-15).max(10).step(0.01).name('Position : Z AXIS');
+
+// Scale
+const pnlQueLaFamilleScaleParameters = {
+    scale: planeGreen.scale.x
+}
+pnlQueLaFamilleFolderScaleFolder.add(pnlQueLaFamilleScaleParameters, 'scale').min(0.5).max(2).step(0.001).name('Scale').onFinishChange(() =>
+{
+    planeGreen.scale.set(pnlQueLaFamilleScaleParameters.scale, pnlQueLaFamilleScaleParameters.scale, pnlQueLaFamilleScaleParameters.scale)
+});
+
+/**
+ * Camera
+ */
+const cameraGUIFolder = gui.addFolder('Steps');
+
+const cameraParameters = {
+    step1allcoversfacingscreen: () =>
+    {
+        pnlGroup.position.set(-2.100, -0.410, -1.200);
+        pnlGroup.rotation.set(0, 0, 0);
+        pnlGroup.scale.set(0.014, 0.014, 0.014);
+
+        laDiscographieGroup.position.set(-1.550, -1.210, -1.500);
+        laDiscographieGroup.rotation.set(0, 0, 0);
+        laDiscographieGroup.scale.set(0.005, 0.005, 0.005);
+
+        planeRed.position.set(0, 0, -1.81);
+        planeRed.rotation.set(0, 0, 0);
+        planeRed.scale.set(1, 1, 1)
+
+        planeBlue.position.set(-0.02, 0, -2.41);
+        planeBlue.rotation.set(0, 0, 0);
+        planeBlue.scale.set(1, 1, 1)
+
+        planeYellow.position.set(-0.02, 0, -2.91);
+        planeYellow.rotation.set(0, 0, 0);
+        planeYellow.scale.set(1, 1, 1)
+
+        planeGreen.position.set(-0.02, 0, -3.31);
+        planeGreen.rotation.set(0, 0, 0);
+        planeGreen.scale.set(1, 1, 1)
+
+    },
+    step2allmeshesrotated: () =>
+    {
+        pnlGroup.position.set(-2.100, -0.410, -1.200);
+        pnlGroup.rotation.set(0, -Math.PI / 4.5, 0);
+        pnlGroup.scale.set(0.014, 0.014, 0.014);
+
+        laDiscographieGroup.position.set(-2.710, -1.210, -1.510);
+        laDiscographieGroup.rotation.set(0, -Math.PI / 4.5, 0);
+        laDiscographieGroup.scale.set(0.005, 0.005, 0.005);
+
+        planeRed.position.set(0, 0, 0);
+        planeRed.rotation.set(0, -Math.PI / 4.5, 0);
+        planeRed.scale.set(1, 1, 1)
+
+        planeBlue.position.set(0.7, 0, -0.800);
+        planeBlue.rotation.set(0, -Math.PI / 4.5, 0);
+        planeBlue.scale.set(1, 1, 1)
+
+        planeYellow.position.set(1.2, 0, -0.800);
+        planeYellow.rotation.set(0, -Math.PI / 4.5, 0);
+        planeYellow.scale.set(1, 1, 1)
+
+        planeGreen.position.set(1.7, 0, -1.200);
+        planeGreen.rotation.set(0, -Math.PI / 4.5, 0);
+        planeGreen.scale.set(1, 1, 1)
+
+    }
+
+}
+
+cameraGUIFolder.add(cameraParameters, 'step1allcoversfacingscreen')
+cameraGUIFolder.add(cameraParameters, 'step2allmeshesrotated')
 
 
 /**
@@ -781,11 +932,6 @@ const tick = () =>
         }
 
     }
-
-
-
-
-
 
     // Render
     renderer.render(scene, camera)
