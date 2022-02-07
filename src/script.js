@@ -6,7 +6,7 @@ import {SVGLoader} from "three/examples/jsm/loaders/SVGLoader";
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
 
-
+let cameraControl = false;
 /**
  * Base
  */
@@ -73,8 +73,8 @@ camera.position.set(0, 0, 10)
 scene.add(camera)
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
 
 /**
  * Planes
@@ -654,14 +654,43 @@ const secondAnimation = () =>
             y: - Math.PI / 4.5
         },0)
 
+    setTimeout(() =>
+    {
+        cameraControl = true;
+
+    }, 1500)
 }
 
 
 startingAnimation();
 
+/**
+ * Mouse follower
+ */
+
+const cursor = {
+    x: 0,
+    y: 0
+};
+
+window.addEventListener('mousemove', (event) => {
+
+    cursor.x = (event.clientX / sizes.width - 0.5) / 6;
+    cursor.y = -(event.clientY / sizes.height - 0.5) / 6;
+
+    if(cameraControl === true)
+    {
+
+        camera.lookAt(cursor.x, cursor.y)
+        // for(let i = 0 ; i < 1 ; i+ 0.1)
+        // {
+        //     //
+        // }
+
+    }
 
 
-
+});
 
 
 const tick = () =>
