@@ -328,6 +328,61 @@ svgLoader.load(
     }
 );
 
+// DLL SVG
+
+let DLLdateSVGGroup = null;
+
+svgLoader.load(
+    '/assets/svg/DLL.svg',
+    (data) =>
+    {
+        console.log(data)
+        const paths = data.paths;
+        DLLdateSVGGroup = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i ++)
+        {
+            const path = paths[i];
+
+            const material = new THREE.MeshBasicMaterial({
+                color: new THREE.Color('white'),
+                side: THREE.DoubleSide,
+                depthWrite: false,
+                transparent: true,
+                opacity: 0,
+            });
+
+            const shapes = SVGLoader.createShapes(path);
+
+            for (let j = 0; j < shapes.length ; j++)
+            {
+                const shape = shapes[j];
+                const geometry = new THREE.ShapeBufferGeometry(shape)
+                const mesh = new THREE.Mesh(geometry, material);
+
+                DLLdateSVGGroup.add(mesh);
+            }
+        }
+
+        DLLdateSVGGroup.scale.set(0.002, 0.002, 0.002)
+
+        DLLdateSVGGroup.position.set(1.030, -0.850, 0);
+        DLLdateSVGGroup.rotation.set(0, - Math.PI / 4.5, 0);
+
+
+
+        scene.add(DLLdateSVGGroup);
+
+    },
+    (xhr) =>
+    {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded')
+    },
+    (err) =>
+    {
+        console.log('An error happened: ' + err)
+    }
+);
 
 // Light
 // const light = new THREE.AmbientLight( 0x222222 );
@@ -865,22 +920,179 @@ let currentIntersect = 1;
 
 const deuxFreresHover = () =>
 {
-    console.log('deux freres')
+    gsap.to(renderer,{
+        duration: 1,
+        setClearColor: '#9B61B9'
+    })
+
+    gsap.to(planeRed.position,{
+        duration: 0.4,
+        x:0.10,
+        y:0,
+        z:0.30
+    })
+
+    gsap.to(planeBlue.position,{
+        duration: 0.4,
+        x:0.65,
+        z:-0.8
+    })
+
+    gsap.to(planeYellow.position,{
+        duration: 0.4,
+        x:1.15,
+        y:0,
+        z:-0.8
+
+    })
+
+    gsap.to(planeGreen.position,{
+        duration: 0.4,
+        z: -1.3
+    })
+
 }
 
 const dansLaLegendeHover = () =>
 {
-    console.log('dll')
+
+    for(let children of DLLdateSVGGroup.children)
+    {
+        children.material.transparent = true
+        children.material.opacity = 0
+
+        gsap.to(children.material,
+            {
+                duration: 1,
+                opacity:1
+            });
+
+    }
+
+    gsap.to(DLLdateSVGGroup.position, {
+        duration: 0.4,
+        x:1.16
+    })
+
+    gsap.to(renderer,{
+        duration: 1,
+        setClearColor: '#E4A18D'
+    })
+
+    gsap.to(planeRed.position,{
+        duration: 0.4,
+        x: -0.06,
+    })
+
+    gsap.to(planeBlue.position,{
+        duration: 0.4,
+        x:0.8,
+        z:-0.6
+    })
+
+    gsap.to(planeYellow.position,{
+        duration: 0.4,
+        x:1.2,
+        y:0,
+        z:-0.8
+    })
+
+    gsap.to(planeGreen.position,{
+        duration: 0.4,
+        z: -1.3
+    })
 }
 
 const leMondeChicoHover = () =>
 {
-    console.log('lmc')
+    gsap.to(renderer,{
+        duration: 1,
+        setClearColor: '#04090D'
+    })
+
+    gsap.to(planeRed.position,{
+        duration: 0.4,
+        x: -0.05,
+        z: 0
+    })
+
+    gsap.to(planeBlue.position,{
+        duration: 0.4,
+        x:0.6,
+        y:0,
+        z:-0.8
+    })
+
+    gsap.to(planeYellow.position,{
+        duration: 0.6,
+        x: 1.4,
+        z: -0.46
+    })
+
+    gsap.to(planeGreen.position,{
+        duration: 0.6,
+        x: 1.8,
+        z: -1.3
+    })
 }
 
 const queLaFamilleHover = () =>
 {
-    console.log('qlf')
+    gsap.to(renderer,{
+        duration: 1,
+        setClearColor: '#B63752'
+    })
+
+    gsap.to(planeRed.position,{
+        duration: 0.4,
+        x: -0.05,
+        z: 0
+    })
+
+    gsap.to(planeBlue.position,{
+        duration: 0.4,
+        x:0.6,
+        y:0,
+        z:-0.8
+    })
+
+    gsap.to(planeYellow.position,{
+        duration: 0.8,
+        x:1.2,
+        z:-0.8
+    })
+
+    gsap.to(planeGreen.position,{
+        duration: 0.8,
+        x: 1.9,
+        z: -1.3
+    })
+}
+
+const leaveRaycasterHover = () =>
+{
+    renderer.setClearColor('#4F5E92')
+    secondAnimation()
+
+    for(let children of DLLdateSVGGroup.children)
+    {
+        children.material.transparent = true
+        children.material.opacity = 0
+
+        gsap.to(children.material,
+            {
+                duration: 0.5,
+                delay: 0.5,
+                opacity:0
+            });
+
+    }
+
+    gsap.to(DLLdateSVGGroup.position, {
+        duration: 0.5,
+        delay: 0.5,
+        x:1.06
+    })
 }
 
 const tick = () =>
@@ -899,12 +1111,12 @@ const tick = () =>
 
         if (intersectObjects.length)
         {
-            if (currentIntersect === null)
+            if (currentIntersect !== intersectObjects[0].object)
             {
                 switch (intersectObjects[0].object.name)
                 {
                     case 'DF':
-                        deuxFreresHover()
+                        deuxFreresHover();
                         break;
                     case 'DLL':
                         dansLaLegendeHover()
@@ -917,16 +1129,17 @@ const tick = () =>
                         break;
                     default:
                 }
-                console.log(intersectObjects[0].object.name)
             }
-            currentIntersect = intersectObjects[0]
+            currentIntersect = intersectObjects[0].object
+            // currentIntersect = null;
+
 
         }
         else
         {
             if (currentIntersect)
             {
-                console.log('mouse leave')
+                leaveRaycasterHover();
             }
             currentIntersect = null;
         }
