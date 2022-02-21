@@ -8,6 +8,7 @@
   "dependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
+    "assert": "^2.0.0",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^9.0.1",
@@ -21,6 +22,7 @@
     "mini-css-extract-plugin": "^2.1.0",
     "portfinder-sync": "0.0.2",
     "raw-loader": "^4.0.2",
+    "signal": "^7.0.6",
     "style-loader": "^3.0.0",
     "three": "^0.130.1",
     "webpack": "^5.42.1",

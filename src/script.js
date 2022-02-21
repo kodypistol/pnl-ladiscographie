@@ -5,6 +5,7 @@ import { MeshBasicMaterial } from "three";
 import {SVGLoader} from "three/examples/jsm/loaders/SVGLoader";
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
+// import {TextureLoader} from './Experience/TextureLoader.js'
 
 let cameraControl = false;
 /**
@@ -15,51 +16,52 @@ let cameraControl = false;
 
 
 // Canvas
-const canvas = document.querySelector('canvas.webgl')
+// const canvas = document.querySelector('canvas.webgl')
 
 // Scene
-const scene = new THREE.Scene()
+// const scene = new THREE.Scene()
 
-// Textures
-const textureLoader = new THREE.TextureLoader();
-const deuxFreresTexture = textureLoader.load('/assets/covers/df.png')
-const dansLaLegendeTexture = textureLoader.load('/assets/covers/dll.jpg')
-const leMondeChicoTexture = textureLoader.load('/assets/covers/lmc.png')
-const queLaFamilleTexture = textureLoader.load('/assets/covers/qlf.jpg')
+// TextureLoader();
+
+// const textureLoader = new THREE.TextureLoader();
+// const deuxFreresTexture = textureLoader.load('/assets/covers/df.png')
+// const dansLaLegendeTexture = textureLoader.load('/assets/covers/dll.jpg')
+// const leMondeChicoTexture = textureLoader.load('/assets/covers/lmc.png')
+// const queLaFamilleTexture = textureLoader.load('/assets/covers/qlf.jpg')
 
 
 /**
  * Sizes
  */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
-
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
+// const sizes = {
+//     width: window.innerWidth,
+//     height: window.innerHeight
+// }
+//
+// window.addEventListener('resize', () =>
+// {
+//     // Update sizes
+//     sizes.width = window.innerWidth
+//     sizes.height = window.innerHeight
+//
+//     // Update camera
+//     camera.aspect = sizes.width / sizes.height
+//     camera.updateProjectionMatrix()
+//
+//     // Update renderer
+//     renderer.setSize(sizes.width, sizes.height)
+//     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+// })
 
 /**
  * Camera
  */
 
-
-const camera = new THREE.PerspectiveCamera(20, sizes.width / sizes.height, 0.1, 1000)
-camera.position.set(0, 0, 10)
-
-scene.add(camera)
+//
+// const camera = new THREE.PerspectiveCamera(20, sizes.width / sizes.height, 0.1, 1000)
+// camera.position.set(0, 0, 10)
+//
+// scene.add(camera)
 
 
 // old Controls
@@ -330,6 +332,62 @@ svgLoader.load(
 
 // DLL SVG
 
+let DFdateSVGGroup = null;
+
+svgLoader.load(
+    '/assets/svg/DFF.svg',
+    (data) =>
+    {
+        console.log(data)
+        const paths = data.paths;
+        DFdateSVGGroup = new THREE.Group();
+
+        for (let i = 0; i < paths.length; i ++)
+        {
+            const path = paths[i];
+
+            const material = new THREE.MeshBasicMaterial({
+                color: new THREE.Color('white'),
+                side: THREE.DoubleSide,
+                depthWrite: false,
+                transparent: true,
+                opacity: 0,
+            });
+
+            const shapes = SVGLoader.createShapes(path);
+
+            for (let j = 0; j < shapes.length ; j++)
+            {
+                const shape = shapes[j];
+                const geometry = new THREE.ShapeBufferGeometry(shape)
+                const mesh = new THREE.Mesh(geometry, material);
+
+                DFdateSVGGroup.add(mesh);
+            }
+        }
+
+        DFdateSVGGroup.scale.set(0.002, 0.002, 0.002)
+
+        DFdateSVGGroup.position.set(0.595, -0.900, 1);
+        DFdateSVGGroup.rotation.set(0, - Math.PI / 4.5, 0);
+
+
+
+        scene.add(DFdateSVGGroup);
+
+    },
+    (xhr) =>
+    {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded')
+    },
+    (err) =>
+    {
+        console.log('An error happened: ' + err)
+    }
+);
+
+// DLL SVG
+
 let DLLdateSVGGroup = null;
 
 svgLoader.load(
@@ -391,14 +449,14 @@ svgLoader.load(
 /**
  * Renderer
  */
-const renderer = new THREE.WebGLRenderer({
-    canvas: canvas,
-    antialias: true,
-})
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-renderer.setClearColor('#0C1020')
+// const renderer = new THREE.WebGLRenderer({
+//     canvas: canvas,
+//     antialias: true,
+// })
+// renderer.setSize(sizes.width, sizes.height)
+// renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+//
+// renderer.setClearColor('#0C1020')
 
 
 /**
@@ -886,44 +944,109 @@ startingAnimation();
  * Mouse follower & Raycaster
  */
 
-/**
- * Raycaster
- */
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+// /**
+//  * Raycaster
+//  */
+// const raycaster = new THREE.Raycaster();
+// const mouse = new THREE.Vector2();
+//
+//
+// const cursor = {
+//     x: 0,
+//     y: 0
+// };
+//
+// window.addEventListener('mousemove', (event) => {
+//
+//
+//     // Cursor for camera controlling
+//     cursor.x = (event.clientX / sizes.width - 0.5) / 6;
+//     cursor.y = -(event.clientY / sizes.height - 0.5) / 6;
+//
+//     if(cameraControl === true)
+//     {
+//         camera.lookAt(cursor.x, cursor.y)
+//     }
+//
+//     //Mouse for Raycaster
+//     mouse.x = event.clientX / sizes.width * 2 - 1;
+//     mouse.y = - (event.clientY / sizes.height * 2 - 1);
+//
+// });
 
-
-const cursor = {
-    x: 0,
-    y: 0
-};
-
-window.addEventListener('mousemove', (event) => {
-
-
-    // Cursor for camera controlling
-    cursor.x = (event.clientX / sizes.width - 0.5) / 6;
-    cursor.y = -(event.clientY / sizes.height - 0.5) / 6;
-
-    if(cameraControl === true)
+const DFSvgHoverLeave = () =>
+{
+    for(let children of DFdateSVGGroup.children)
     {
-        camera.lookAt(cursor.x, cursor.y)
+        children.material.transparent = true
+        children.material.opacity = 0
+
+        gsap.to(children.material,
+            {
+                duration: 0.5,
+                opacity:0
+            });
+
     }
 
-    //Mouse for Raycaster
-    mouse.x = event.clientX / sizes.width * 2 - 1;
-    mouse.y = - (event.clientY / sizes.height * 2 - 1);
+    gsap.to(DFdateSVGGroup.position, {
+        duration: 0.5,
+        x:0.5
+    })
+}
 
-});
+const DLLSvgHoverLeave = () =>
+{
+    for(let children of DLLdateSVGGroup.children)
+    {
+        children.material.transparent = true
+        children.material.opacity = 0
+
+        gsap.to(children.material,
+            {
+                duration: 0.5,
+                opacity:0
+            });
+
+    }
+
+    gsap.to(DLLdateSVGGroup.position, {
+        duration: 0.5,
+        x:0.95
+    })
+}
 
 let currentIntersect = 1;
 
 const deuxFreresHover = () =>
 {
-    gsap.to(renderer,{
-        duration: 1,
-        setClearColor: '#9B61B9'
+
+    for(let children of DFdateSVGGroup.children)
+    {
+        children.material.transparent = true
+        children.material.opacity = 0
+
+        gsap.to(children.material,
+            {
+                duration: 1,
+                opacity:1,
+            });
+
+    }
+
+    gsap.to(DFdateSVGGroup.position, {
+        duration: 0.4,
+        x:0.595,
+        y:-0.900,
+        z:1
     })
+
+    DLLSvgHoverLeave()
+
+    // gsap.to(renderer,{
+    //     duration: 1,
+    //     setClearColor: '#9B61B9'
+    // })
 
     gsap.to(planeRed.position,{
         duration: 0.4,
@@ -956,6 +1079,8 @@ const deuxFreresHover = () =>
 const dansLaLegendeHover = () =>
 {
 
+    DFSvgHoverLeave()
+
     for(let children of DLLdateSVGGroup.children)
     {
         children.material.transparent = true
@@ -974,10 +1099,10 @@ const dansLaLegendeHover = () =>
         x:1.16
     })
 
-    gsap.to(renderer,{
-        duration: 1,
-        setClearColor: '#E4A18D'
-    })
+    // gsap.to(renderer,{
+    //     duration: 1,
+    //     setClearColor: '#E4A18D'
+    // })
 
     gsap.to(planeRed.position,{
         duration: 0.4,
@@ -1005,10 +1130,11 @@ const dansLaLegendeHover = () =>
 
 const leMondeChicoHover = () =>
 {
-    gsap.to(renderer,{
-        duration: 1,
-        setClearColor: '#04090D'
-    })
+    DLLSvgHoverLeave()
+    // gsap.to(renderer,{
+    //     duration: 1,
+    //     setClearColor: '#04090D'
+    // })
 
     gsap.to(planeRed.position,{
         duration: 0.4,
@@ -1038,10 +1164,12 @@ const leMondeChicoHover = () =>
 
 const queLaFamilleHover = () =>
 {
-    gsap.to(renderer,{
-        duration: 1,
-        setClearColor: '#B63752'
-    })
+    DLLSvgHoverLeave()
+
+    // gsap.to(renderer,{
+    //     duration: 1,
+    //     setClearColor: '#B63752'
+    // })
 
     gsap.to(planeRed.position,{
         duration: 0.4,
@@ -1071,86 +1199,69 @@ const queLaFamilleHover = () =>
 
 const leaveRaycasterHover = () =>
 {
-    renderer.setClearColor('#4F5E92')
+    // renderer.setClearColor('#4F5E92')
     secondAnimation()
-
-    for(let children of DLLdateSVGGroup.children)
-    {
-        children.material.transparent = true
-        children.material.opacity = 0
-
-        gsap.to(children.material,
-            {
-                duration: 0.5,
-                delay: 0.5,
-                opacity:0
-            });
-
-    }
-
-    gsap.to(DLLdateSVGGroup.position, {
-        duration: 0.5,
-        delay: 0.5,
-        x:1.06
-    })
+    DLLSvgHoverLeave()
+    DFSvgHoverLeave()
 }
 
-const tick = () =>
-{
-    const elapsedTime = clock.getElapsedTime()
-    const deltaTime = elapsedTime - lastElapsedTime
-    lastElapsedTime = elapsedTime
 
-    //Raycaster
-    if(cameraControl)
-    {
-        raycaster.setFromCamera(mouse, camera)
-
-        const hoveringElements = [planeRed, planeBlue, planeYellow, planeGreen]
-        const intersectObjects = raycaster.intersectObjects(hoveringElements)
-
-        if (intersectObjects.length)
-        {
-            if (currentIntersect !== intersectObjects[0].object)
-            {
-                switch (intersectObjects[0].object.name)
-                {
-                    case 'DF':
-                        deuxFreresHover();
-                        break;
-                    case 'DLL':
-                        dansLaLegendeHover()
-                        break;
-                    case 'LMC':
-                        leMondeChicoHover()
-                        break;
-                    case 'QLF':
-                        queLaFamilleHover()
-                        break;
-                    default:
-                }
-            }
-            currentIntersect = intersectObjects[0].object
-            // currentIntersect = null;
-
-
-        }
-        else
-        {
-            if (currentIntersect)
-            {
-                leaveRaycasterHover();
-            }
-            currentIntersect = null;
-        }
-
-    }
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
-}
-
-tick()
+// const tick = () =>
+// {
+//     const elapsedTime = clock.getElapsedTime()
+//     const deltaTime = elapsedTime - lastElapsedTime
+//     lastElapsedTime = elapsedTime
+//
+//     //Raycaster
+//     if(cameraControl)
+//     {
+//         raycaster.setFromCamera(mouse, camera)
+//
+//         const hoveringElements = [planeRed, planeBlue, planeYellow, planeGreen]
+//         const intersectObjects = raycaster.intersectObjects(hoveringElements)
+//
+//         if (intersectObjects.length)
+//         {
+//             if (currentIntersect !== intersectObjects[0].object)
+//             {
+//                 switch (intersectObjects[0].object.name)
+//                 {
+//                     case 'DF':
+//                         deuxFreresHover();
+//                         break;
+//                     case 'DLL':
+//                         dansLaLegendeHover()
+//                         break;
+//                     case 'LMC':
+//                         leMondeChicoHover()
+//                         break;
+//                     case 'QLF':
+//                         queLaFamilleHover()
+//                         break;
+//                     default:
+//                 }
+//             }
+//             currentIntersect = intersectObjects[0].object
+//             // currentIntersect = null;
+//
+//
+//         }
+//         else
+//         {
+//             if (currentIntersect)
+//             {
+//                 leaveRaycasterHover();
+//             }
+//             currentIntersect = null;
+//         }
+//
+//     }
+//
+//     // Render
+//     renderer.render(scene, camera)
+//
+//     // Call tick again on the next frame
+//     window.requestAnimationFrame(tick)
+// }
+//
+// tick()
