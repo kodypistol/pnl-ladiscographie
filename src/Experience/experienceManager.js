@@ -17,11 +17,21 @@ const canvas = document.querySelector('canvas.webgl');
 const experienceManager =
 {
     // Init objects which will be loaded in the starting screen
-    objects: {
+    texturesObjects: {
         dfTexture: null,
         dllTexture: null,
         lmcTexture: null,
-        qlfTexture: null
+        qlfTexture: null,
+
+    },
+
+    svgObjects: {
+        pnlTitleSVG: null,
+        laDiscographieSVG: null,
+        dfSVG: null,
+        dllSVG: null,
+        lmcSVG: null,
+        qlfSVG: null,
     },
 
     // Initialization of the experience. Setting the scene, renderer, raycaster, loader, loop
@@ -34,14 +44,22 @@ const experienceManager =
 
         // Load plane textures
         loaderManager.loadMultipleTextures({
-            df: assets.dfTexture,
-            dll: assets.dllTexture,
-            lmc: assets.lmcTexture,
-            qlf: assets.qlfTexture
-        }, this.onLoadComplete.bind(this));
+            dfTexture: assets.textures.dfTexture,
+            dllTexture: assets.textures.dllTexture,
+            lmcTexture: assets.textures.lmcTexture,
+            qlfTexture: assets.textures.qlfTexture
+        }, this.onLoadTexturesComplete.bind(this));
 
-        console.log('OBJETS CHARGÉS :')
-        console.log(this.objects)
+        loaderManager.loadMultipleSVGs({
+            pnlTitleSVG: assets.svgAssets.pnl,
+            laDiscographieSVG: assets.svgAssets.laDiscographie,
+            dfSVG: assets.svgAssets.dfSVG,
+            dllSVG: assets.svgAssets.dllSVG,
+            lmcSVG: assets.svgAssets.lmcSVG,
+            qlfSVG: assets.svgAssets.qlfSVG
+        }, this.onLoadSVGComplete.bind(this));
+
+
 
         // Signal setup change screen
         // signal.on('changeScreen', this.onChangeScreen);
@@ -54,14 +72,24 @@ const experienceManager =
 
     },
 
-    onLoadComplete(){
-      this.objects = loaderManager.loadedAssets;
+    onLoadTexturesComplete(){
+      this.texturesObjects = loaderManager.textureLoadedAssets;
       router.setScreen(1);
+        console.log('textures CHARGÉES :')
+        console.log(this.texturesObjects)
+    },
+
+    onLoadSVGComplete(){
+        this.svgObjects = loaderManager.svgLoadedAssets;
+        router.setScreen(1);
+        console.log('svg CHARGÉS :')
+        console.log(this.svgObjects)
+        this.placeMeshFirstScene()
+
     },
 
     startExperience(){
         renderer.startLoop();
-        this.placeMeshFirstScene()
     },
 
     // onChangeScreen(index){
@@ -83,7 +111,7 @@ const experienceManager =
             new THREE.PlaneBufferGeometry(2, 2),
             new MeshBasicMaterial({
                 side: THREE.DoubleSide,
-                map: this.objects.df,
+                map: this.texturesObjects.dfTexture,
 
             })
         )
@@ -95,6 +123,7 @@ const experienceManager =
         DF.rotation.y = - Math.PI / 4.5
 
         sceneManager.addObject(DF)
+        sceneManager.addObject(this.svgObjects.dfSVG)
     }
 }
 
