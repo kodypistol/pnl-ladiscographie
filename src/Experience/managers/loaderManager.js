@@ -126,7 +126,6 @@ const loaderManager = {
     loadSVG(path, callback){
 
         const svgLoader = new SVGLoader();
-
         svgLoader.load(
             path,
             (data) =>
@@ -165,25 +164,8 @@ const loaderManager = {
                 this.svg.position.y = 0
                 this.svg.position.z = 0
 
-                // sceneManager.addObject(this.pnlGroup);
-
                 callback(this.svg);
             }
-
-
-            // path,
-            // (svg) =>
-            // {
-            //     callback(svg)
-            // },
-            // () =>
-            // {
-            //     console.log('progress loading svg')
-            // },
-            // (e) =>
-            // {
-            //     console.log('error: ' + e)
-            // },
 
         );
     },
