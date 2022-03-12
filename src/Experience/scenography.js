@@ -2,6 +2,8 @@ import * as THREE from "three";
 import {MeshBasicMaterial} from "three";
 import sceneManager from "./managers/sceneManager";
 import experienceManager from "./experienceManager";
+import renderer from './renderer'
+import gsap from 'gsap';
 
 const scenography = {
     objects: {
@@ -21,8 +23,6 @@ const scenography = {
     {
 
 
-
-
         const DF = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(2, 2),
             new MeshBasicMaterial({
@@ -33,9 +33,10 @@ const scenography = {
         )
         DF.name = 'DF'
 
-        DF.position.set(0, 0, 0)
-        DF.rotation.x = 0
-        DF.rotation.y = - Math.PI / 4.5
+        DF.position.set(-7, 0, -1.81)
+        DF.rotation.set(0, 0, 0)
+        DF.scale.set(1, 1, 1)
+
 
         this.objects.df = DF
         sceneManager.addObject(DF)
@@ -51,9 +52,8 @@ const scenography = {
         )
         DLL.name = 'DLL'
 
-        DLL.position.set(0, 0, 0)
-        DLL.rotation.x = 0
-        DLL.rotation.y = - Math.PI / 4.5
+        DLL.position.set(7, 0, -2.41)
+        DLL.rotation.set(0,0,0)
 
         this.objects.dll = DLL
         sceneManager.addObject(DLL)
@@ -68,9 +68,8 @@ const scenography = {
         )
         LMC.name = 'LMC'
 
-        LMC.position.set(0, 0, 0)
-        LMC.rotation.x = 0
-        LMC.rotation.y = - Math.PI / 4.5
+        LMC.position.set(-7, 0, -2.91)
+        LMC.rotation.set(0, 0, 0)
 
         this.objects.lmc = LMC
         sceneManager.addObject(LMC)
@@ -85,9 +84,8 @@ const scenography = {
         )
         QLF.name = 'QLF'
 
-        QLF.position.set(0, 0, 0)
-        QLF.rotation.x = 0
-        QLF.rotation.y = - Math.PI / 4.5
+        QLF.position.set(7, 0, -3.31)
+        QLF.rotation.set(0, 0, 0)
 
         this.objects.qlf = QLF
         sceneManager.addObject(QLF)
@@ -95,25 +93,218 @@ const scenography = {
         // SVGs
         this.objects.pnlTitleSVG = experienceManager.svgObjects.pnlTitleSVG
         this.objects.pnlTitleSVG.name = 'PNL Title'
-        this.objects.pnlTitleSVG.position.y = -1
-        this.objects.pnlTitleSVG.transparent = true;
-        this.objects.pnlTitleSVG.opacity = 0
+        this.objects.pnlTitleSVG.position.set(-2.100, -0.410, -1.200);
+        this.objects.pnlTitleSVG.rotation.set(0, 0, 0);
+        this.objects.pnlTitleSVG.scale.set(0.014, 0.014, 0.014);
+        this.setOpacity(this.objects.pnlTitleSVG, 0)
+        this.setColor(this.objects.pnlTitleSVG, '#ED6A65')
+
         sceneManager.addObject(this.objects.pnlTitleSVG)
 
         this.objects.laDiscographieSVG = experienceManager.svgObjects.laDiscographieSVG
+        this.objects.laDiscographieSVG.position.set(-1.550, -1.210, -1.500);
+        this.objects.laDiscographieSVG.rotation.set(0, 0, 0);
+        this.objects.laDiscographieSVG.scale.set(0.005, 0.005, 0.005);
+        this.setOpacity(this.objects.laDiscographieSVG, 0);
+        this.setColor(this.objects.laDiscographieSVG, '#71F9FC');
+
         sceneManager.addObject(this.objects.laDiscographieSVG)
 
+
+
         this.objects.dfSVG = experienceManager.svgObjects.dfSVG
+        this.setOpacity(this.objects.dfSVG, 0);
         sceneManager.addObject(this.objects.dfSVG)
 
+
         this.objects.dllSVG = experienceManager.svgObjects.dllSVG
+        this.setOpacity(this.objects.dllSVG, 0);
         sceneManager.addObject(this.objects.dllSVG)
 
         this.objects.lmcSVG = experienceManager.svgObjects.lmcSVG
+        this.setOpacity(this.objects.lmcSVG, 0);
         sceneManager.addObject(this.objects.lmcSVG)
 
         this.objects.qlfSVG = experienceManager.svgObjects.qlfSVG
+        this.setOpacity(this.objects.qlfSVG, 0);
         sceneManager.addObject(this.objects.qlfSVG)
+
+
+
+        // START ANIMATION
+        this.startIntro();
+
+    },
+    setColor(mesh, color){
+        mesh.children.forEach((child) =>
+        {
+            child.material.color = new THREE.Color(color);
+        })
+    },
+    setOpacity(mesh, opacity){
+        mesh.children.forEach((child) =>
+        {
+            child.material.transparent = true;
+            child.material.opacity = opacity;
+        })
+
+    },
+    startIntro(){
+        /**
+         * FADE IN & ZOOM
+         */
+        // Scene Background
+        gsap.to(renderer.getRenderer(), {
+            setClearColor: '#4F5E92',
+            duration: 2,
+        })
+
+        // PNL TITLE
+        this.objects.pnlTitleSVG.children.forEach((child) =>
+        {
+            gsap.to(child.material, {
+                duration: 1,
+                delay: 1,
+                opacity:1
+            })
+        })
+        gsap.to(this.objects.pnlTitleSVG.scale, {
+            delay: 1,
+            duration: 1,
+            x: 0.016,
+            y: 0.016,
+            z:0.016
+        })
+        // LA DISCOGRAPHIE TITLE
+        this.objects.laDiscographieSVG.children.forEach((child) =>
+        {
+            gsap.to(child.material, {
+                duration: 1,
+                delay: 1,
+                opacity:1
+            })
+        })
+        gsap.to(this.objects.laDiscographieSVG.scale, {
+            delay:1,
+            duration: 1,
+            x: 0.0055,
+            y: 0.0055,
+            z:0.0055
+        })
+
+        /**
+         * COVER APPARITION
+         */
+        // Setting GSAP timeline
+        const introAnimationCovers = gsap.timeline(
+            {
+                repeat: 0,
+                onComplete: this.initMainNavigation.bind(this)
+            })
+        // DEUX FRÈRES ANIMATION POSITION
+        introAnimationCovers.to(this.objects.df.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+
+        // DANS LA LÉGENDE ANIMATION POSITION
+        introAnimationCovers.to(this.objects.dll.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+
+        // LE MONDE CHICO ANIMATION POSITION
+        introAnimationCovers.to(this.objects.lmc.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+
+        // QUE LA FAMILLE ANIMATION POSITION
+        introAnimationCovers.to(this.objects.qlf.position,
+            {
+                duration: 1,
+                delay: 2,
+                x:0
+            },0)
+    },
+    initMainNavigation(){
+        console.log(this.objects)
+        /**
+         * ROTATE
+         */
+        const initializeMainNav = gsap.timeline(
+            {
+                repeat: 0,
+                onComplete: this.setupComplete
+            })
+
+        // PNL Title: rotation
+        initializeMainNav.to(this.objects.pnlTitleSVG.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+
+        // La Discographie: rotation
+        initializeMainNav.to(this.objects.laDiscographieSVG.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+
+        //DF: rotation
+        initializeMainNav.to(this.objects.df.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+
+        // DLL: rotation
+        initializeMainNav.to(this.objects.dll.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+
+        // LMC: rotation
+        initializeMainNav.to(this.objects.lmc.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+
+        // QLF: rotation
+        initializeMainNav.to(this.objects.qlf.rotation,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: - Math.PI / 4.5,
+                z: 0
+            }, 0)
+    },
+    setupComplete(){
 
     }
 }

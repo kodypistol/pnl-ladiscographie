@@ -578,13 +578,13 @@ const cameraGUIFolder = gui.addFolder('Steps');
 const cameraParameters = {
     step1allcoversfacingscreen: () =>
     {
-        pnlGroup.position.set(-2.100, -0.410, -1.200);
-        pnlGroup.rotation.set(0, 0, 0);
-        pnlGroup.scale.set(0.014, 0.014, 0.014);
-
-        laDiscographieGroup.position.set(-1.550, -1.210, -1.500);
-        laDiscographieGroup.rotation.set(0, 0, 0);
-        laDiscographieGroup.scale.set(0.005, 0.005, 0.005);
+        // pnlGroup.position.set(-2.100, -0.410, -1.200);
+        // pnlGroup.rotation.set(0, 0, 0);
+        // pnlGroup.scale.set(0.014, 0.014, 0.014);
+        //
+        // laDiscographieGroup.position.set(-1.550, -1.210, -1.500);
+        // laDiscographieGroup.rotation.set(0, 0, 0);
+        // laDiscographieGroup.scale.set(0.005, 0.005, 0.005);
 
         planeRed.position.set(0, 0, -1.81);
         planeRed.rotation.set(0, 0, 0);
