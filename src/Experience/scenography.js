@@ -4,6 +4,7 @@ import sceneManager from "./managers/sceneManager";
 import experienceManager from "./experienceManager";
 import renderer from './renderer'
 import gsap from 'gsap';
+import debugPanel from "./debugPanel";
 
 const scenography = {
     objects: {
@@ -22,6 +23,9 @@ const scenography = {
     init()
     {
 
+        this.everythingContainer = new THREE.Group();
+        sceneManager.addObject(this.everythingContainer);
+
 
         const DF = new THREE.Mesh(
             new THREE.PlaneBufferGeometry(2, 2),
@@ -35,7 +39,7 @@ const scenography = {
 
         DF.position.set(-7, 0, -1.81)
         DF.rotation.set(0, 0, 0)
-        DF.scale.set(1, 1, 1)
+        DF.scale.set(1.12, 1.12, 1.12)
 
 
         this.objects.df = DF
@@ -54,6 +58,8 @@ const scenography = {
 
         DLL.position.set(7, 0, -2.41)
         DLL.rotation.set(0,0,0)
+        DLL.scale.set(1.08, 1.08, 1.08)
+
 
         this.objects.dll = DLL
         sceneManager.addObject(DLL)
@@ -70,6 +76,7 @@ const scenography = {
 
         LMC.position.set(-7, 0, -2.91)
         LMC.rotation.set(0, 0, 0)
+
 
         this.objects.lmc = LMC
         sceneManager.addObject(LMC)
@@ -171,9 +178,9 @@ const scenography = {
         gsap.to(this.objects.pnlTitleSVG.scale, {
             delay: 1,
             duration: 1,
-            x: 0.016,
-            y: 0.016,
-            z:0.016
+            x: 0.014,
+            y: 0.014,
+            z:0.014
         })
         // LA DISCOGRAPHIE TITLE
         this.objects.laDiscographieSVG.children.forEach((child) =>
@@ -241,7 +248,7 @@ const scenography = {
         const initializeMainNav = gsap.timeline(
             {
                 repeat: 0,
-                onComplete: this.setupComplete
+                onComplete: this.setupComplete.bind(this)
             })
 
         // PNL Title: rotation
@@ -250,7 +257,7 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
 
@@ -260,7 +267,7 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
 
@@ -270,7 +277,7 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
 
@@ -280,7 +287,7 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
 
@@ -290,7 +297,7 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
 
@@ -300,12 +307,83 @@ const scenography = {
                 duration: 1,
                 delay: 0.5,
                 x:0,
-                y: - Math.PI / 4.5,
+                y: - Math.PI / 5,
                 z: 0
             }, 0)
+        /**
+         * POSITION
+         */
+
+        // PNL Title: position
+        initializeMainNav.to(this.objects.pnlTitleSVG.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:-2.3,
+                y: -0.29,
+                z: -3.14
+            }, 0)
+
+        // La Discographie: position
+        initializeMainNav.to(this.objects.laDiscographieSVG.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:-2.81,
+                y: -1.28,
+                z: -2.47
+            }, 0)
+
+        //DF: position
+        initializeMainNav.to(this.objects.df.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0,
+                y: 0,
+                z: -1.8
+            }, 0)
+
+        // DLL: position
+        initializeMainNav.to(this.objects.dll.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:0.55,
+                y: 0,
+                z: -2.4
+            }, 0)
+
+        // LMC: position
+        initializeMainNav.to(this.objects.lmc.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x:1.27,
+                y: 0,
+                z: -4.23
+            }, 0)
+
+        // QLF: position
+        initializeMainNav.to(this.objects.qlf.position,
+            {
+                duration: 1,
+                delay: 0.5,
+                x: 2.34,
+                y: 0,
+                z: -8.43
+            }, 0)
+
     },
     setupComplete(){
+        this.everythingContainer.add(this.objects.pnlTitleSVG);
+        this.everythingContainer.add(this.objects.laDiscographieSVG);
+        this.everythingContainer.add(this.objects.df);
+        this.everythingContainer.add(this.objects.dll);
+        this.everythingContainer.add(this.objects.lmc);
+        this.everythingContainer.add(this.objects.qlf);
 
+        debugPanel.initEverythingContainer();
     }
 }
 

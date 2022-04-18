@@ -7,7 +7,7 @@ class Camera {
     constructor() {
         // Create a Perspective Camera
         this.threeCamera = new THREE.PerspectiveCamera(
-            20,
+            15,
             window.innerWidth / window.innerHeight,
             0.1, 1000
         );
