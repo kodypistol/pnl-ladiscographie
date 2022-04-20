@@ -94,4 +94,4 @@ const debugPanel = {
     }
 }
 
-export default debugPanel
+export default debugPanel;

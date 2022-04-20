@@ -1,0 +1,26 @@
+  @font-face {
+    font-family: "Doppelganger";
+    font-weight: 500;
+    src: url("./assets/fonts/DoppelgangerDisplay.otf") format("opentype");
+  }
+
+
+
+.album {
+  p {
+    color: #FFF;
+    font-family: Doppelganger;
+    font-size: 120px;
+    letter-spacing: -2.21px;
+    line-height: 483px;
+
+  }
+  br {
+    margin: 0;
+  }
+}
+
+
+.webgl {
+  z-index: -1;
+}

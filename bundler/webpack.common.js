@@ -54,6 +54,19 @@ module.exports = {
                 ]
             },
 
+            // SCSS
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    // Creates `style` nodes from JS strings
+                    "style-loader",
+                    // Translates CSS into CommonJS
+                    "css-loader",
+                    // Compiles Sass to CSS
+                    "sass-loader",
+                ],
+            },
+
             // Images
             {
                 test: /\.(jpg|png|gif|svg)$/,
@@ -71,17 +84,17 @@ module.exports = {
 
             // Fonts
             {
-                test: /\.(ttf|eot|woff|woff2)$/,
+                test: /\.(ttf|eot|woff|woff2|otf)$/,
                 use:
-                [
-                    {
-                        loader: 'file-loader',
-                        options:
+                    [
                         {
-                            outputPath: 'assets/fonts/'
+                            loader: 'file-loader',
+                            options:
+                                {
+                                    outputPath: 'assets/fonts/'
+                                }
                         }
-                    }
-                ]
+                    ]
             },
 
             // Shaders
