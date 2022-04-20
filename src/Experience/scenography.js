@@ -5,6 +5,7 @@ import experienceManager from "./experienceManager";
 import renderer from './renderer'
 import gsap from 'gsap';
 import debugPanel from "./debugPanel";
+import raycaster from "./raycaster";
 
 const scenography = {
     objects: {
@@ -384,6 +385,7 @@ const scenography = {
         this.everythingContainer.add(this.objects.qlf);
 
         debugPanel.initEverythingContainer();
+        raycaster.setCameraControl(true);
     }
 }
 

@@ -12,6 +12,7 @@ const raycaster = {
     init(){
 
         this.raycaster = new THREE.Raycaster();
+        console.log('initializing raycaster')
         this.mouse = new THREE.Vector2();
 
         this.cursor = {
@@ -41,7 +42,7 @@ const raycaster = {
         return this.raycaster;
     },
     getCameraControl(){
-        return cameraControl;
+        return this.cameraControl;
     },
     setCameraControl(bool){
         this.cameraControl = bool;

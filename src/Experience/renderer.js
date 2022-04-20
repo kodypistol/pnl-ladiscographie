@@ -2,6 +2,8 @@ import * as THREE from "three";
 import raycaster from './raycaster'
 import experienceManager from "./experienceManager";
 import sceneManager from "./managers/sceneManager";
+import scenography from "./scenography";
+import raycasterScenography from "./raycasterScenography";
 
 const renderer = {
     init(canvas)
@@ -32,6 +34,8 @@ const renderer = {
     },
 
 
+
+
     /**
      * -------------- LOOP TICK FUNCTION --------------
      */
@@ -50,38 +54,51 @@ const renderer = {
 
 
             // Raycaster
-            // if(raycaster.getCameraControl())
-            // {
-            //     raycaster.threeSetFromCamera();
-            //
-            //     this.hoveringElements = [experienceManager.objects.df, experienceManager.objects.dll,
-            //         experienceManager.objects.lmc, experienceManager.objects.qlf]
-            //
-            //     this.intersectObjects = raycaster.getRaycaster().intersectObjects(this.hoveringElements)
-            //
-            //     if (this.intersectObjects.length)
-            //     {
-            //         if (this.currentIntersect !== this.intersectObjects[0].object)
-            //         {
-            //             switch (this.intersectObjects[0].object.name)
-            //             {
-            //
-            //                 default:
-            //             }
-            //         }
-            //         this.currentIntersect = this.intersectObjects[0].object
-            //
-            //     }
-            //     else
-            //     {
-            //         if (this.currentIntersect)
-            //         {
-            //             // leaveRaycasterHover();
-            //         }
-            //         this.currentIntersect = null;
-            //     }
-            //
-            // }
+            if(raycaster.getCameraControl())
+            {
+
+                raycaster.threeSetFromCamera();
+
+                this.hoveringElements = [scenography.objects.df, scenography.objects.dll,
+                    scenography.objects.lmc, scenography.objects.qlf]
+
+                this.intersectObjects = raycaster.getRaycaster().intersectObjects(this.hoveringElements)
+
+                if (this.intersectObjects.length)
+                {
+                    if (this.currentIntersect !== this.intersectObjects[0].object)
+                    {
+                        switch (this.intersectObjects[0].object.name)
+                        {
+                            case 'DF':
+                                raycasterScenography.hoverAlbum('DF');
+                                break;
+                            case 'DLL':
+                                console.log('dans la legende hover')
+                                break;
+                            case 'LMC':
+                                console.log('lmc hover')
+                                break;
+                            case 'QLF':
+                                console.log('qlf hover')
+                                break;
+
+                            default:
+                        }
+                    }
+                    this.currentIntersect = this.intersectObjects[0].object
+
+                }
+                else
+                {
+                    if (this.currentIntersect)
+                    {
+                        console.log('je suis dnas le else if ')
+                    }
+                    this.currentIntersect = null;
+                }
+
+            }
 
             // Render
             this.draw();
