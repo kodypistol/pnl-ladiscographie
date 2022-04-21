@@ -103,7 +103,7 @@ const scenography = {
         this.objects.pnlTitleSVG.name = 'PNL Title'
         this.objects.pnlTitleSVG.position.set(-2.100, -0.410, -1.200);
         this.objects.pnlTitleSVG.rotation.set(0, 0, 0);
-        this.objects.pnlTitleSVG.scale.set(0.014, 0.014, 0.014);
+        this.objects.pnlTitleSVG.scale.set(0.01, 0.01, 0.01);
         this.setOpacity(this.objects.pnlTitleSVG, 0)
         this.setColor(this.objects.pnlTitleSVG, '#ED6A65')
 

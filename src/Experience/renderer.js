@@ -45,6 +45,8 @@ const renderer = {
         this.lastElapsedTime = 0;
 
         this.currentIntersect = null;
+        this.newNavigation = true;
+        this.hoveredElementsHistory = [];
 
         this.tick = () =>
         {
@@ -71,16 +73,42 @@ const renderer = {
                         switch (this.intersectObjects[0].object.name)
                         {
                             case 'DF':
-                                raycasterScenography.hoverAlbum('DF');
+                                if (this.newNavigation)
+                                {
+                                    this.newNavigation = false;
+                                    console.log('LA NEW NAVIGATION EST FALSE MTN')
+                                    break;
+                                } else {
+                                    this.hoveredElementsHistory.length > 1 ? this.hoveredElementsHistory.shift() :                                     this.hoveredElementsHistory.push('DF');
+                                    this.hoveredElementsHistory.push('DF');
+                                    console.log('file d\'attente de hover:');
+                                    console.log(this.hoveredElementsHistory);
+                                    raycasterScenography.hoverAlbum('DF');
+                                }
                                 break;
                             case 'DLL':
-                                console.log('dans la legende hover')
+                                this.hoveredElementsHistory.length > 1 ? this.hoveredElementsHistory.shift() :                                     this.hoveredElementsHistory.push('DF');
+                                this.hoveredElementsHistory.push('DLL');
+                                console.log('file d\'attente de hover:');
+                                console.log(this.hoveredElementsHistory);
+                                raycasterScenography.hoverAlbum('DLL');
+
                                 break;
                             case 'LMC':
-                                console.log('lmc hover')
+                                this.hoveredElementsHistory.length > 1 ? this.hoveredElementsHistory.shift() :                                     this.hoveredElementsHistory.push('DF');
+                                this.hoveredElementsHistory.push('LMC');
+                                console.log('file d\'attente de hover:');
+                                console.log(this.hoveredElementsHistory);
+                                raycasterScenography.hoverAlbum('LMC');
+
                                 break;
                             case 'QLF':
-                                console.log('qlf hover')
+                                this.hoveredElementsHistory.length > 1 ? this.hoveredElementsHistory.shift() :                                     this.hoveredElementsHistory.push('DF');
+                                this.hoveredElementsHistory.push('QLF');
+                                console.log('file d\'attente de hover:');
+                                console.log(this.hoveredElementsHistory);
+                                raycasterScenography.hoverAlbum('QLF');
+
                                 break;
 
                             default:

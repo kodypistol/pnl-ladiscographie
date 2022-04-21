@@ -24,8 +24,8 @@ const raycaster = {
 
 
             // Cursor for camera controlling
-            this.cursor.x = (event.clientX / window.innerWidth - 0.5) / 6;
-            this.cursor.y = -(event.clientY / window.innerHeight - 0.5) / 6;
+            this.cursor.x = (event.clientX / window.innerWidth - 0.5) / 20;
+            this.cursor.y = -(event.clientY / window.innerHeight - 0.5) / 20;
 
             if(this.cameraControl)
             {
