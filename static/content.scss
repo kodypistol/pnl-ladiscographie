@@ -4,22 +4,98 @@
     src: url("./assets/fonts/DoppelgangerDisplay.otf") format("opentype");
   }
 
+  @font-face {
+    font-family: "Druk Wide";
+    font-weight: 700;
+    src: url("./assets/fonts/DrukWide-Bold.otf") format("opentype");
+  }
+
+  @font-face {
+    font-family: "Druk Wide";
+    font-weight: 900;
+    src: url("./assets/fonts/DrukWide-Heavy.otf") format("opentype");
+  }
+
+  @font-face {
+    font-family: "Druk Wide";
+    font-weight: 500;
+    src: url("./assets/fonts/DrukWide-Medium.otf") format("opentype");
+  }
+
 
 
 .album {
-  display: none;
-  p {
-    color: #FFF;
-    font-family: Doppelganger;
-    font-size: 120px;
-    letter-spacing: -2.21px;
-    line-height: 483px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  width: 100%;
+
+  color: #FFF;
+  font-family: Doppelganger;
+  letter-spacing: -2.21px;
+
+  margin-left: 24px;
+  font-size: 484px;
+
+  .first-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    color: #00FDFF;
+
+    .deux {
+      height: 350px;
+    }
+
+    .scroll-discover {
+      width: 100%;
+      font-family: "Druk Wide";
+      letter-spacing: -0.05px;
+      line-height: 12px;
+      font-weight: 500;
+      font-size: 10px;
+    }
+
+    .overflow-animated-bar{
+      position: absolute;
+      overflow: hidden;
+      display: flex;
+      right: 12.6%;
+
+      width: 89px;
+      .animated-bar {
+        background: #00FDFF;
+        width: 89px;
+        //width: 0px;
+        //height: 1px;
+        height: 1px;
+        /* Here we declare our inline animation */
+        //animation-direction: reverse;
+        animation: loading 1s ease-in-out infinite;
+      }
+    }
+
 
   }
-  br {
-    margin: 0;
+  .second-row {
+    display: flex;
+    margin-top: 200px;
+
   }
+
 }
+
+  @keyframes loading {
+    from {
+      margin-left: -120px;
+    }
+
+    to {
+      margin-left: 120px;
+    }
+  }
 
 
 .webgl {

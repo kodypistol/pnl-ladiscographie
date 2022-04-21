@@ -1,6 +1,7 @@
 import renderer from './renderer'
 import sceneManager from "./managers/sceneManager";
 import gsap from 'gsap'
+import discoverAlbumManager from "./managers/discoverAlbumManager";
 
 const raycasterScenography = {
     hoverAlbum(album){
@@ -53,6 +54,7 @@ const raycasterScenography = {
             // {
             //     console.log('les meme donc pas de click sale fou va')
             // } else {
+                discoverAlbumManager.discoverDeuxFreres();
                 console.log('clicked on ', this.actualHoverElement)
             // }
         }
