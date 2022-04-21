@@ -25,7 +25,7 @@
 
 
 .album {
-  display: flex;
+  display: none;
   flex-direction: column;
   pointer-events: none;
   width: 100%;
@@ -42,11 +42,14 @@
     width: 100%;
     align-items: center;
     justify-content: space-between;
-    gap: 25px;
+    gap: 350px;
     color: #00FDFF;
 
     .deux {
+      font-size: 350px;
+      margin-top: 100px;
       height: 350px;
+      color: #fff;
     }
 
     .scroll-discover {
@@ -62,17 +65,13 @@
       position: absolute;
       overflow: hidden;
       display: flex;
-      right: 12.6%;
+      right: 8.5%;
 
       width: 89px;
       .animated-bar {
         background: #00FDFF;
         width: 89px;
-        //width: 0px;
-        //height: 1px;
         height: 1px;
-        /* Here we declare our inline animation */
-        //animation-direction: reverse;
         animation: loading 1s ease-in-out infinite;
       }
     }
