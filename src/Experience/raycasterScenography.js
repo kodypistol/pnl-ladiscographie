@@ -4,6 +4,11 @@ import gsap from 'gsap'
 
 const raycasterScenography = {
     hoverAlbum(album){
+
+
+        window.addEventListener('click', this.onClick)
+
+
         switch (album) {
             case 'DF':
                 console.log('df album');
@@ -25,6 +30,7 @@ const raycasterScenography = {
 
                 break;
         }
+
     },
     moveAlbum(album)
     {
@@ -32,10 +38,24 @@ const raycasterScenography = {
         this.actualObject = sceneManager.getThreeScene().getObjectByName(album);
 
         gsap.to(this.actualObject.position, {
-           x: this.actualObject.position.x + 2
+           x: this.actualObject.position.x + 0.05
         });
 
         // don't forget if hoveredElementsHistory[0] && hoveredElementsHistory[1] are equal
+    },
+    onClick(event)
+    {
+        this.actualHoverElement = renderer.hoveredElementsHistory[1];
+
+        if (this.actualHoverElement)
+        {
+            // if (this.actualHoverElement === renderer.hoveredElementsHistory[0])
+            // {
+            //     console.log('les meme donc pas de click sale fou va')
+            // } else {
+                console.log('clicked on ', this.actualHoverElement)
+            // }
+        }
     }
 }
 

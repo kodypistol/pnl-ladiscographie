@@ -121,7 +121,12 @@ const renderer = {
                 {
                     if (this.currentIntersect)
                     {
+                        // Reset, don't forgot the renitialize all positions
+                        scenography.initMainNavigation()
                         console.log('je suis dnas le else if ')
+                        console.log('rénitialisation hoveredelements')
+                        this.hoveredElementsHistory = [];
+                        console.log(this.hoveredElementsHistory)
                     }
                     this.currentIntersect = null;
                 }
