@@ -252,6 +252,19 @@ const scenography = {
                 onComplete: this.setupComplete.bind(this)
             })
 
+        // Change colors of PNL title & discographie title
+
+        this.objects.laDiscographieSVG.children.forEach((child) =>
+        {
+            gsap.to(child.material, {
+                setHEX:'#fffff',
+                duration: 1,
+                delay: 0
+            })
+        })
+
+
+
         // PNL Title: rotation
         initializeMainNav.to(this.objects.pnlTitleSVG.rotation,
             {

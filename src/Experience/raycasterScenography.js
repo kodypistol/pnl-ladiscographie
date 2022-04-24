@@ -48,7 +48,7 @@ const raycasterScenography = {
     {
         this.actualHoverElement = renderer.hoveredElementsHistory[1];
 
-        if (this.actualHoverElement)
+        if (this.actualHoverElement === 'DF')
         {
             // if (this.actualHoverElement === renderer.hoveredElementsHistory[0])
             // {
